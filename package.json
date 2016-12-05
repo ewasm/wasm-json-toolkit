@@ -25,12 +25,12 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/ewasm/wasm-json-toolkit.git"
   },
   "bugs": {
-    "url": ""
+    "url": "https://github.com/ewasm/wasm-json-toolkit/issues"
   },
-  "homepage": "",
+  "homepage": "https://github.com/ewasm/wasm-json-toolkit",
   "standard": {
     "ignore": [
       "test/wabt"
