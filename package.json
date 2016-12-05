@@ -34,5 +34,12 @@
     "ignore": [
       "test/wabt"
     ]
-  }
+  },
+  "files": [
+    "./json2wasm.js",
+    "./wasm2json.js",
+    "./leb.js",
+    "./steam.js",
+    "./index.js"
+  ]
 }
