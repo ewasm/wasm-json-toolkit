@@ -115,3 +115,6 @@ converts a json representation to a wasm binary
 -   `Object`  
 
 Returns **[Buffer](https://nodejs.org/api/buffer.html)** 
+
+# LICENSE
+[MPL-2.0](https://tldrlegal.com/license/mozilla-public-license-2.0-(mpl-2))
