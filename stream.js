@@ -1,3 +1,4 @@
+// since stream in nodejs don't really work the way I would want them too
 module.exports = class FakeStream {
   constructor (buf = new Buffer([])) {
     this.buffer = buf
