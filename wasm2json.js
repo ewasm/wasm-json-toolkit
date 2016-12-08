@@ -317,7 +317,8 @@ _exports.immediataryParsers = {
     return [...stream.read(8)]
   },
   'block_type': (stream) => {
-    return stream.read(1)[0]
+    const type = stream.read(1)[0]
+    return LANGUAGE_TYPES[type]
   },
   'br_table': (stream) => {
     const json = {

@@ -275,7 +275,7 @@ _exports.immediataryGenerators = {
     return stream
   },
   'block_type': (json, stream) => {
-    stream.write([json])
+    stream.write([LANGUAGE_TYPES[json]])
     return stream
   },
   'br_table': (json, stream) => {
