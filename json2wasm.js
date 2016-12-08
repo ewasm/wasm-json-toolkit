@@ -57,7 +57,7 @@ _exports.generateResizableLimits = (json, stream) => {
  */
 _exports.generateInitExpr = (json, stream) => {
   _exports.generateOp(json, stream)
-  _exports.generateOp({name: 'end'}, stream)
+  _exports.generateOp({name: 'end', type: 'void'}, stream)
 }
 
 const SECTIONS_IDS = _exports.SECTIONS_IDS = {
@@ -498,8 +498,14 @@ _exports.generatePreramble = (json, stream = new Stream()) => {
 }
 
 _exports.generateOp = (json, stream = new Stream()) => {
-  stream.write([OPCODES[json.name]])
-  const immediaties = OP_IMMEDIATIES[json.name]
+  let name = json.name
+  if (json.type !== 'void' && json.type !== undefined) {
+    name = json.type + '.' + name
+  }
+
+  stream.write([OPCODES[name]])
+
+  const immediaties = OP_IMMEDIATIES[json.name === 'const' ? json.type : json.name]
   if (immediaties) {
     _exports.immediataryGenerators[immediaties](json.immediaties, stream)
   }

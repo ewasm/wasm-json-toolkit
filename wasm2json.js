@@ -568,8 +568,22 @@ const sectionParsers = _exports.sectionParsers = {
 _exports.parseOp = (stream) => {
   const json = {}
   const op = stream.read(1)[0]
-  json.name = OPCODES[op]
-  const immediaties = OP_IMMEDIATIES[json.name]
+  const fullName = OPCODES[op]
+  let [type, name] = fullName.split('.')
+
+  if (name === undefined) {
+    name = type
+    type = 'void'
+  }
+
+  json.name = name
+  json.type = type
+
+  if (name === 'const') {
+    name = type
+  }
+
+  const immediaties = OP_IMMEDIATIES[name]
   if (immediaties) {
     json.immediaties = _exports.immediataryParsers[immediaties](stream)
   }
