@@ -1,5 +1,6 @@
 const leb = require('./leb.js')
 const Stream = require('./stream.js')
+const OP_IMMEDIATIES = require('./immediates.json')
 
 const _exports = module.exports = (json) => {
   return _exports.generate(json).buffer
@@ -248,51 +249,6 @@ const OPCODES = _exports.OPCODES = {
   'f64.reinterpret/i64': 0xbf
 }
 
-const OP_IMMEDIATIES = _exports.OP_IMMEDIATIES = {
-  'block': 'block_type',
-  'loop': 'block_type',
-  'if': 'block_type',
-  'br': 'varuint32',
-  'br_if': 'varuint32',
-  'br_table': 'br_table',
-  'call': 'varuint32',
-  'call_indirect': 'call_indirect',
-  'get_local': 'varuint32',
-  'set_local': 'varuint32',
-  'tee_local': 'varuint32',
-  'get_global': 'varuint32',
-  'set_global': 'varuint32',
-  'i32.load': 'memory_immediate',
-  'i64.load': 'memory_immediate',
-  'f32.load': 'memory_immediate',
-  'f64.load': 'memory_immediate',
-  'i32.load8_s': 'memory_immediate',
-  'i32.load8_u': 'memory_immediate',
-  'i32.load16_s': 'memory_immediate',
-  'i32.load16_u': 'memory_immediate',
-  'i64.load8_s': 'memory_immediate',
-  'i64.load8_u': 'memory_immediate',
-  'i64.load16_s': 'memory_immediate',
-  'i64.load16_u': 'memory_immediate',
-  'i64.load32_s': 'memory_immediate',
-  'i64.load32_u': 'memory_immediate',
-  'i32.store': 'memory_immediate',
-  'i64.store': 'memory_immediate',
-  'f32.store': 'memory_immediate',
-  'f64.store': 'memory_immediate',
-  'i32.store8': 'memory_immediate',
-  'i32.store16': 'memory_immediate',
-  'i64.store8': 'memory_immediate',
-  'i64.store16': 'memory_immediate',
-  'i64.store32': 'memory_immediate',
-  'current_memory': 'varuint1',
-  'grow_memory': 'varuint1',
-  'i32.const': 'varint32',
-  'i64.const': 'varint64',
-  'f32.const': 'uint32',
-  'f64.const': 'uint64'
-}
-
 _exports.immediataryGenerators = {
   'varuint1': (json, stream) => {
     stream.write([json])
@@ -529,7 +485,7 @@ const sectionGenerators = {
 _exports.generate = (json, stream = new Stream()) => {
   _exports.generatePreramble(json.shift(), stream)
   for (let item of json) {
-    sectionGenerators[item.section](item, stream)
+    sectionGenerators[item.name](item, stream)
   }
 
   return stream

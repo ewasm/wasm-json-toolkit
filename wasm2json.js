@@ -1,5 +1,6 @@
 const Stream = require('./stream.js')
 const leb = require('./leb.js')
+const OP_IMMEDIATIES = require('./immediates.json')
 
 const _exports = module.exports = (buf) => {
   const stream = new Stream(buf)
@@ -68,6 +69,7 @@ _exports.parseInitExpr = (stream) => {
 
 _exports.parsePreramble = (stream) => {
   const obj = {}
+  obj.name = 'preramble'
   obj.magic = [...stream.read(4)]
   obj.version = [...stream.read(4)]
   return obj
@@ -291,51 +293,6 @@ const SECTIONS_IDS = _exports.SECTIONS_IDS = {
   11: 'data'
 }
 
-const OP_IMMEDIATIES = _exports.OP_IMMEDIATIES = {
-  'block': 'block_type',
-  'loop': 'block_type',
-  'if': 'block_type',
-  'br': 'varuint32',
-  'br_if': 'varuint32',
-  'br_table': 'br_table',
-  'call_indirect': 'call_indirect',
-  'call': 'varuint32',
-  'get_local': 'varuint32',
-  'set_local': 'varuint32',
-  'tee_local': 'varuint32',
-  'get_global': 'varuint32',
-  'set_global': 'varuint32',
-  'i32.load': 'memory_immediate',
-  'i64.load': 'memory_immediate',
-  'f32.load': 'memory_immediate',
-  'f64.load': 'memory_immediate',
-  'i32.load8_s': 'memory_immediate',
-  'i32.load8_u': 'memory_immediate',
-  'i32.load16_s': 'memory_immediate',
-  'i32.load16_u': 'memory_immediate',
-  'i64.load8_s': 'memory_immediate',
-  'i64.load8_u': 'memory_immediate',
-  'i64.load16_s': 'memory_immediate',
-  'i64.load16_u': 'memory_immediate',
-  'i64.load32_s': 'memory_immediate',
-  'i64.load32_u': 'memory_immediate',
-  'i32.store': 'memory_immediate',
-  'i64.store': 'memory_immediate',
-  'f32.store': 'memory_immediate',
-  'f64.store': 'memory_immediate',
-  'i32.store8': 'memory_immediate',
-  'i32.store16': 'memory_immediate',
-  'i64.store8': 'memory_immediate',
-  'i64.store16': 'memory_immediate',
-  'i64.store32': 'memory_immediate',
-  'current_memory': 'varuint1',
-  'grow_memory': 'varuint1',
-  'i32.const': 'varint32',
-  'i64.const': 'varint64',
-  'f32.const': 'uint32',
-  'f64.const': 'uint64'
-}
-
 _exports.immediataryParsers = {
   'varuint1': (stream) => {
     const int1 = stream.read(1)[0]
@@ -392,7 +349,7 @@ const sectionParsers = _exports.sectionParsers = {
   'type': (stream) => {
     const numberOfEntries = leb.readUint(stream)
     const json = {
-      section: 'type',
+      name: 'type',
       entries: []
     }
 
@@ -423,7 +380,7 @@ const sectionParsers = _exports.sectionParsers = {
   'import': (stream) => {
     const numberOfEntries = leb.readUint(stream)
     const json = {
-      section: 'import',
+      name: 'import',
       entries: []
     }
 
@@ -445,7 +402,7 @@ const sectionParsers = _exports.sectionParsers = {
   'function': (stream) => {
     const numberOfEntries = leb.readUint(stream)
     const json = {
-      section: 'function',
+      name: 'function',
       entries: []
     }
 
@@ -458,7 +415,7 @@ const sectionParsers = _exports.sectionParsers = {
   'table': (stream) => {
     const numberOfEntries = leb.readUint(stream)
     const json = {
-      section: 'table',
+      name: 'table',
       entries: []
     }
 
@@ -475,7 +432,7 @@ const sectionParsers = _exports.sectionParsers = {
   'memory': (stream) => {
     const numberOfEntries = leb.readUint(stream)
     const json = {
-      section: 'memory',
+      name: 'memory',
       entries: []
     }
 
@@ -488,7 +445,7 @@ const sectionParsers = _exports.sectionParsers = {
   'global': (stream) => {
     const numberOfEntries = leb.readUint(stream)
     const json = {
-      section: 'global',
+      name: 'global',
       entries: []
     }
 
@@ -504,7 +461,7 @@ const sectionParsers = _exports.sectionParsers = {
   'export': (stream) => {
     const numberOfEntries = leb.readUint(stream)
     const json = {
-      section: 'export',
+      name: 'export',
       entries: []
     }
 
@@ -521,7 +478,7 @@ const sectionParsers = _exports.sectionParsers = {
   },
   'start': (stream) => {
     const json = {
-      section: 'start'
+      name: 'start'
     }
 
     json.index = leb.readUint(stream)
@@ -530,7 +487,7 @@ const sectionParsers = _exports.sectionParsers = {
   'element': (stream) => {
     const numberOfEntries = leb.readUint(stream)
     const json = {
-      section: 'element',
+      name: 'element',
       entries: []
     }
 
@@ -554,7 +511,7 @@ const sectionParsers = _exports.sectionParsers = {
   'code': (stream) => {
     const numberOfEntries = leb.readUint(stream)
     const json = {
-      section: 'code',
+      name: 'code',
       entries: []
     }
 
@@ -591,7 +548,7 @@ const sectionParsers = _exports.sectionParsers = {
   'data': (stream) => {
     const numberOfEntries = leb.readUint(stream)
     const json = {
-      section: 'data',
+      name: 'data',
       entries: []
     }
 
