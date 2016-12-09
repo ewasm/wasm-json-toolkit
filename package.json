@@ -4,7 +4,7 @@
   "description": "this convertes wasm binaries to json and json to wasm binaries",
   "main": "index.js",
   "scripts": {
-    "coverage": "node --harmony ./node_modules/istanbul/lib/cli.js cover ./test/roundtrips.js",
+    "coverage": "node --harmony ./node_modules/istanbul/lib/cli.js cover ./test/index.js",
     "coveralls": "npm run coverage && coveralls <coverage/lcov.info",
     "lint": "standard",
     "test": "node --harmony ./test/index.js"

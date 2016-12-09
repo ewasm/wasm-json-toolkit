@@ -1,6 +1,6 @@
 const leb = require('./leb.js')
 const Stream = require('./stream.js')
-const OP_IMMEDIATIES = require('./immediates.json')
+const OP_IMMEDIATES = require('./immediates.json')
 
 const _exports = module.exports = (json) => {
   return _exports.generate(json).buffer
@@ -499,13 +499,13 @@ _exports.generatePreramble = (json, stream = new Stream()) => {
 
 _exports.generateOp = (json, stream = new Stream()) => {
   let name = json.name
-  if (json.type !== 'void' && json.type !== undefined) {
-    name = json.type + '.' + name
+  if (json.return_type !== undefined) {
+    name = json.return_type + '.' + name
   }
 
   stream.write([OPCODES[name]])
 
-  const immediaties = OP_IMMEDIATIES[json.name === 'const' ? json.type : json.name]
+  const immediaties = OP_IMMEDIATES[json.name === 'const' ? json.return_type : json.name]
   if (immediaties) {
     _exports.immediataryGenerators[immediaties](json.immediaties, stream)
   }

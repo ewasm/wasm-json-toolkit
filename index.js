@@ -11,3 +11,10 @@ exports.wasm2json = require('./wasm2json.js')
  * @return {Buffer}
  */
 exports.json2wasm = require('./json2wasm.js')
+
+/**
+ * converts text to json
+ * @param {String}
+ * @return {Object}
+ */
+exports.text2json = require('./text2json.js')

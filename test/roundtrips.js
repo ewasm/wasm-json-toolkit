@@ -4,9 +4,9 @@ const tape = require('tape')
 const wasm2json = require('../wasm2json.js')
 const json2wasm = require('../json2wasm.js')
 
-fs.readdir(path.join(__dirname, './wasm'), (err, files) => {
-  if (err) throw err
-  tape('round trips', async t => {
+tape('round trips', t => {
+  fs.readdir(path.join(__dirname, './wasm'), async (err, files) => {
+    if (err) throw err
     for (let file of files) {
       t.comment(file)
       await new Promise(resolve => {

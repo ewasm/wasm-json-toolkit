@@ -1,6 +1,6 @@
 const Stream = require('./stream.js')
 const leb = require('./leb.js')
-const OP_IMMEDIATIES = require('./immediates.json')
+const OP_IMMEDIATES = require('./immediates.json')
 
 const _exports = module.exports = (buf) => {
   const stream = new Stream(buf)
@@ -574,17 +574,13 @@ _exports.parseOp = (stream) => {
 
   if (name === undefined) {
     name = type
-    type = 'void'
+  } else {
+    json.return_type = type
   }
 
   json.name = name
-  json.type = type
 
-  if (name === 'const') {
-    name = type
-  }
-
-  const immediaties = OP_IMMEDIATIES[name]
+  const immediaties = OP_IMMEDIATES[name === 'const' ? type : name]
   if (immediaties) {
     json.immediaties = _exports.immediataryParsers[immediaties](stream)
   }
