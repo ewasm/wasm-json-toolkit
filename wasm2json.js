@@ -587,11 +587,28 @@ _exports.parseOp = (stream) => {
   return json
 }
 
+_exports.parseCustom = (header, stream) => {
+  const json = {}
+  const section = new Stream(stream.read(header.size))
+  const nameLen = leb.readUint(section)
+  const name = section.read(nameLen)
+  json.name = name.toString()
+  json.payload = [...section.buffer]
+  return json
+}
+
 _exports.parse = (stream) => {
   const json = [_exports.parsePreramble(stream)]
+  let header = _exports.parseSectionHeader(stream)
+  // parse custom headers
+  while (!stream.done && header.name === undefined) {
+    json.push(_exports.parseCustom(header, stream))
+    header = _exports.parseSectionHeader(stream)
+  }
+
   while (!stream.done) {
-    const header = _exports.parseSectionHeader(stream)
     json.push(sectionParsers[header.name](stream))
+    header = _exports.parseSectionHeader(stream)
   }
   return json
 }

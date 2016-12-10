@@ -484,10 +484,25 @@ const sectionGenerators = {
 
 _exports.generate = (json, stream = new Stream()) => {
   _exports.generatePreramble(json.shift(), stream)
+  while (json.length && SECTIONS_IDS[json[0].name] === undefined) {
+    _exports.generateCustom(json.shift(), stream)
+  }
   for (let item of json) {
     sectionGenerators[item.name](item, stream)
   }
 
+  return stream
+}
+
+_exports.generateCustom = (json, stream = new Stream()) => {
+  stream.write([0])
+  const payload = new Stream()
+  leb.write(json.name.length, payload)
+  payload.write(json.name)
+  payload.write(json.payload)
+  // write the size of the payload
+  leb.write(payload.bytesWrote, stream)
+  stream.write(payload.buffer)
   return stream
 }
 
