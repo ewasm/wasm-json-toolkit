@@ -1,5 +1,7 @@
+0061736d0d00000001070160027f7f017f03020100070a010661646454776f00000a09010700200020016a0b
 [
   {
+    "name": "preramble",
     "magic": [
       0,
       97,
@@ -14,7 +16,7 @@
     ]
   },
   {
-    "section": "type",
+    "name": "type",
     "entries": [
       {
         "form": "func",
@@ -27,13 +29,13 @@
     ]
   },
   {
-    "section": "function",
+    "name": "function",
     "entries": [
       0
     ]
   },
   {
-    "section": "export",
+    "name": "export",
     "entries": [
       {
         "field_str": "addTwo",
@@ -43,7 +45,7 @@
     ]
   },
   {
-    "section": "code",
+    "name": "code",
     "entries": [
       {
         "locals": [],
@@ -57,7 +59,8 @@
             "immediaties": "1"
           },
           {
-            "name": "i32.add"
+            "return_type": "i32",
+            "name": "add"
           },
           {
             "name": "end"

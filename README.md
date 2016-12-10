@@ -41,25 +41,26 @@ json
 ```
 [
   {
+    "name": "preramble",
     "magic": [0,97,115,109],
     "version": [13,0,0,0]
   },
   {
-    "section": "type",
+    "name": "type",
     "entries": [
       {
         "form": "func",
-        "params": ["i32", "i32"],
+        "params": ["i32","i32"],
         "return_type": "i32"
       }
     ]
   },
   {
-    "section": "function",
+    "name": "function",
     "entries": [0]
   },
   {
-    "section": "export",
+    "name": "export",
     "entries": [
       {
         "field_str": "addTwo",
@@ -69,7 +70,7 @@ json
     ]
   },
   {
-    "section": "code",
+    "name": "code",
     "entries": [
       {
         "locals": [],
@@ -83,7 +84,8 @@ json
             "immediaties": "1"
           },
           {
-            "name": "i32.add"
+            "return_type": "i32",
+            "name": "add"
           },
           {
             "name": "end"
