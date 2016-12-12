@@ -4,6 +4,7 @@ const json2wasm = require('../json2wasm')
 const wasm2json = require('../wasm2json')
 
 const wasm = fs.readFileSync(`${__dirname}/customSection.wasm`)
+console.log(wasm.toString('hex'))
 const expectedJson = [{
   'name': 'preramble',
   'magic': [

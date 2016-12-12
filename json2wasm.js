@@ -42,11 +42,11 @@ const EXTERNAL_KIND = _exports.EXTERNAL_KIND = {
  * @param {Stream} stream
  */
 _exports.generateResizableLimits = (json, stream) => {
-  leb.write(Number(json.maximum !== undefined), stream) // the flags
-  leb.write(json.intial, stream)
+  leb.unsigned.write(Number(json.maximum !== undefined), stream) // the flags
+  leb.unsigned.write(json.intial, stream)
 
   if (json.maximum !== undefined) {
-    leb.write(json.maximum, stream)
+    leb.unsigned.write(json.maximum, stream)
   }
 }
 
@@ -255,15 +255,15 @@ _exports.immediataryGenerators = {
     return stream
   },
   'varuint32': (json, stream) => {
-    leb.write(json, stream)
+    leb.unsigned.write(json, stream)
     return stream
   },
   'varint32': (json, stream) => {
-    leb.writeSigned(json, stream)
+    leb.signed.write(json, stream)
     return stream
   },
   'varint64': (json, stream) => {
-    leb.writeSigned(json, stream)
+    leb.signed.write(json, stream)
     return stream
   },
   'uint32': (json, stream) => {
@@ -279,21 +279,21 @@ _exports.immediataryGenerators = {
     return stream
   },
   'br_table': (json, stream) => {
-    leb.write(json.targets.length, stream)
+    leb.unsigned.write(json.targets.length, stream)
     for (let target of json.targets) {
-      leb.write(target, stream)
+      leb.unsigned.write(target, stream)
     }
-    leb.write(json.defaultTarget, stream)
+    leb.unsigned.write(json.defaultTarget, stream)
     return stream
   },
   'call_indirect': (json, stream) => {
-    leb.write(json.index, stream)
+    leb.unsigned.write(json.index, stream)
     stream.write([json.reserved])
     return stream
   },
   'memory_immediate': (json, stream) => {
-    leb.write(json.flags, stream)
-    leb.write(json.offset, stream)
+    leb.unsigned.write(json.flags, stream)
+    leb.unsigned.write(json.offset, stream)
 
     return stream
   }
@@ -304,13 +304,13 @@ const sectionGenerators = {
     stream.write([SECTIONS_IDS['type']])
     let binEntries = new Stream()
 
-    leb.write(json.entries.length, binEntries)
+    leb.unsigned.write(json.entries.length, binEntries)
     for (let entry of json.entries) {
       // a single type entry binary encoded
       binEntries.write([LANGUAGE_TYPES[entry.form]]) // the form
 
       const len = entry.params.length  // number of parameters
-      leb.write(len, binEntries)
+      leb.unsigned.write(len, binEntries)
       if (len !== 0) {
         binEntries.write(entry.params.map(type => LANGUAGE_TYPES[type])) // the paramter types
       }
@@ -322,7 +322,7 @@ const sectionGenerators = {
       }
     }
 
-    leb.write(binEntries.bytesWrote, stream) // write the size
+    leb.unsigned.write(binEntries.bytesWrote, stream) // write the size
     stream.write(binEntries.buffer)
 
     return stream
@@ -330,18 +330,18 @@ const sectionGenerators = {
   'import': (json, stream) => {
     stream.write([SECTIONS_IDS['import']])
     let binEntries = new Stream()
-    leb.write(json.entries.length, binEntries) // write the number of entries
+    leb.unsigned.write(json.entries.length, binEntries) // write the number of entries
     for (let entry of json.entries) {
       // write the module string
-      leb.write(entry.moduleStr.length, binEntries)
+      leb.unsigned.write(entry.moduleStr.length, binEntries)
       binEntries.write(entry.moduleStr)
       // write the field string
-      leb.write(entry.fieldStr.length, binEntries)
+      leb.unsigned.write(entry.fieldStr.length, binEntries)
       binEntries.write(entry.fieldStr)
       // write the import type
       binEntries.write([EXTERNAL_KIND[entry.kind], entry.index])
     }
-    leb.write(binEntries.bytesWrote, stream) // write the size
+    leb.unsigned.write(binEntries.bytesWrote, stream) // write the size
     stream.write(binEntries.buffer)
     return stream
   },
@@ -349,11 +349,11 @@ const sectionGenerators = {
     stream.write([SECTIONS_IDS['function']])
 
     let binEntries = new Stream()
-    leb.write(json.entries.length, binEntries)
+    leb.unsigned.write(json.entries.length, binEntries)
     for (let index of json.entries) {
-      leb.write(index, binEntries)
+      leb.unsigned.write(index, binEntries)
     }
-    leb.write(binEntries.bytesWrote, stream)
+    leb.unsigned.write(binEntries.bytesWrote, stream)
     stream.write(binEntries.buffer)
     return stream
   },
@@ -361,13 +361,13 @@ const sectionGenerators = {
     stream.write([SECTIONS_IDS['table']])
     let binEntries = new Stream()
     // write table_type
-    leb.write(json.entries.length, binEntries)
+    leb.unsigned.write(json.entries.length, binEntries)
     for (let entry of json.entries) {
       binEntries.write([LANGUAGE_TYPES[entry.elementType]])
       _exports.generateResizableLimits(entry.limits, binEntries)
     }
 
-    leb.write(binEntries.bytesWrote, stream)
+    leb.unsigned.write(binEntries.bytesWrote, stream)
     stream.write(binEntries.buffer)
 
     return stream
@@ -375,11 +375,11 @@ const sectionGenerators = {
   'memory': (json, stream) => {
     stream.write([SECTIONS_IDS['memory']])
     let binEntries = new Stream()
-    leb.write(json.entries.length, binEntries)
+    leb.unsigned.write(json.entries.length, binEntries)
     for (let entry of json.entries) {
       _exports.generateResizableLimits(entry, binEntries)
     }
-    leb.write(binEntries.bytesWrote, stream)
+    leb.unsigned.write(binEntries.bytesWrote, stream)
     stream.write(binEntries.buffer)
     return stream
   },
@@ -387,13 +387,13 @@ const sectionGenerators = {
     stream.write([SECTIONS_IDS['global']])
     let binEntries = new Stream()
 
-    leb.write(json.entries.length, binEntries)
+    leb.unsigned.write(json.entries.length, binEntries)
     for (let entry of json.entries) {
       _exports.generateGlobalType(entry.type, binEntries)
       _exports.generateInitExpr(entry.init, binEntries)
     }
 
-    leb.write(binEntries.bytesWrote, stream)
+    leb.unsigned.write(binEntries.bytesWrote, stream)
     stream.write(binEntries.buffer)
     return stream
   },
@@ -401,56 +401,56 @@ const sectionGenerators = {
     stream.write([SECTIONS_IDS['export']])
 
     let binEntries = new Stream()
-    leb.write(json.entries.length, binEntries)
+    leb.unsigned.write(json.entries.length, binEntries)
     for (let entry of json.entries) {
       const strLen = entry.field_str.length
-      leb.write(strLen, binEntries)
+      leb.unsigned.write(strLen, binEntries)
       binEntries.write(entry.field_str)
       binEntries.write([EXTERNAL_KIND[entry.kind]])
-      leb.write(entry.index, binEntries)
+      leb.unsigned.write(entry.index, binEntries)
     }
 
-    leb.write(binEntries.bytesWrote, stream)
+    leb.unsigned.write(binEntries.bytesWrote, stream)
     stream.write(binEntries.buffer)
     return stream
   },
   'start': (json, stream) => {
     stream.write([SECTIONS_IDS['start']])
     const index = new Stream()
-    leb.write(json.index, index)
-    leb.write(index.bytesWrote, stream)
+    leb.unsigned.write(json.index, index)
+    leb.unsigned.write(index.bytesWrote, stream)
     stream.write(index.buffer)
     return stream
   },
   'element': (json, stream) => {
     stream.write([SECTIONS_IDS['element']])
     let binEntries = new Stream()
-    leb.write(json.entries.length, binEntries)
+    leb.unsigned.write(json.entries.length, binEntries)
 
     for (let entry of json.entries) {
-      leb.write(entry.index, binEntries)
+      leb.unsigned.write(entry.index, binEntries)
       _exports.generateInitExpr(entry.offset, binEntries)
-      leb.write(entry.elements.length, binEntries)
+      leb.unsigned.write(entry.elements.length, binEntries)
       for (let elem of entry.elements) {
-        leb.write(elem, binEntries)
+        leb.unsigned.write(elem, binEntries)
       }
     }
 
-    leb.write(binEntries.bytesWrote, stream)
+    leb.unsigned.write(binEntries.bytesWrote, stream)
     stream.write(binEntries.buffer)
     return stream
   },
   'code': (json, stream = new Stream()) => {
     stream.write([SECTIONS_IDS['code']])
     let binEntries = new Stream()
-    leb.write(json.entries.length, binEntries)
+    leb.unsigned.write(json.entries.length, binEntries)
 
     for (let entry of json.entries) {
       let codeStream = new Stream()
       // write the locals
-      leb.write(entry.locals.length, codeStream)
+      leb.unsigned.write(entry.locals.length, codeStream)
       for (let local of entry.locals) {
-        leb.write(local.count, codeStream)
+        leb.unsigned.write(local.count, codeStream)
         codeStream.write([LANGUAGE_TYPES[local.type]])
       }
       // write opcode
@@ -458,25 +458,25 @@ const sectionGenerators = {
         _exports.generateOp(op, codeStream)
       }
 
-      leb.write(codeStream.bytesWrote, binEntries)
+      leb.unsigned.write(codeStream.bytesWrote, binEntries)
       binEntries.write(codeStream.buffer)
     }
-    leb.write(binEntries.bytesWrote, stream)
+    leb.unsigned.write(binEntries.bytesWrote, stream)
     stream.write(binEntries.buffer)
     return stream
   },
   'data': (json, stream) => {
     stream.write([SECTIONS_IDS['data']])
     let binEntries = new Stream()
-    leb.write(json.entries.length, binEntries)
+    leb.unsigned.write(json.entries.length, binEntries)
     for (let entry of json.entries) {
-      leb.write(entry.index, binEntries)
+      leb.unsigned.write(entry.index, binEntries)
       _exports.generateInitExpr(entry.offset, binEntries)
-      leb.write(entry.data.length, binEntries)
+      leb.unsigned.write(entry.data.length, binEntries)
       binEntries.write(entry.data)
     }
 
-    leb.write(binEntries.bytesWrote, stream)
+    leb.unsigned.write(binEntries.bytesWrote, stream)
     stream.write(binEntries.buffer)
     return stream
   }
@@ -497,11 +497,11 @@ _exports.generate = (json, stream = new Stream()) => {
 _exports.generateCustom = (json, stream = new Stream()) => {
   stream.write([0])
   const payload = new Stream()
-  leb.write(json.name.length, payload)
+  leb.unsigned.write(json.name.length, payload)
   payload.write(json.name)
   payload.write(json.payload)
   // write the size of the payload
-  leb.write(payload.bytesWrote, stream)
+  leb.unsigned.write(payload.bytesWrote, stream)
   stream.write(payload.buffer)
   return stream
 }

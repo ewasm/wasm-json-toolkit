@@ -48,10 +48,10 @@ const EXTERNAL_KIND = _exports.EXTERNAL_KIND = {
  */
 _exports.parseResizableLimits = (stream) => {
   const limits = {}
-  limits.flags = leb.readUint(stream)
-  limits.intial = leb.readUint(stream)
+  limits.flags = leb.unsigned.readBn(stream).toNumber()
+  limits.intial = leb.unsigned.readBn(stream).toNumber()
   if (limits.flags === 1) {
-    limits.maximum = leb.readUint(stream)
+    limits.maximum = leb.unsigned.readBn(stream).toNumber()
   }
   return limits
 }
@@ -77,7 +77,7 @@ _exports.parsePreramble = (stream) => {
 
 _exports.parseSectionHeader = (stream) => {
   const id = stream.read(1)[0]
-  const size = leb.readUint(stream)
+  const size = leb.unsigned.readBn(stream).toNumber()
   return {
     id: id,
     name: SECTIONS_IDS[id],
@@ -299,15 +299,15 @@ _exports.immediataryParsers = {
     return int1
   },
   'varuint32': (stream) => {
-    const int32 = leb.read(stream)
+    const int32 = leb.unsigned.read(stream)
     return int32
   },
   'varint32': (stream) => {
-    const int32 = leb.readSigned(stream)
+    const int32 = leb.signed.read(stream)
     return int32
   },
   'varint64': (stream) => {
-    const int64 = leb.readSigned(stream)
+    const int64 = leb.signed.read(stream)
     return int64
   },
   'uint32': (stream) => {
@@ -324,31 +324,31 @@ _exports.immediataryParsers = {
     const json = {
       targets: []
     }
-    const num = leb.readUint(stream)
+    const num = leb.unsigned.readBn(stream).toNumber()
     for (let i = 0; i < num; i++) {
-      const target = leb.readUint(stream)
+      const target = leb.unsigned.readBn(stream).toNumber()
       json.targets.push(target)
     }
-    json.defaultTarget = leb.readUint(stream)
+    json.defaultTarget = leb.unsigned.readBn(stream).toNumber()
     return json
   },
   'call_indirect': (stream) => {
     const json = {}
-    json.index = leb.readUint(stream)
+    json.index = leb.unsigned.readBn(stream).toNumber()
     json.reserved = stream.read(1)[0]
     return json
   },
   'memory_immediate': (stream) => {
     const json = {}
-    json.flags = leb.readUint(stream)
-    json.offset = leb.readUint(stream)
+    json.flags = leb.unsigned.readBn(stream).toNumber()
+    json.offset = leb.unsigned.readBn(stream).toNumber()
     return json
   }
 }
 
 const sectionParsers = _exports.sectionParsers = {
   'type': (stream) => {
-    const numberOfEntries = leb.readUint(stream)
+    const numberOfEntries = leb.unsigned.readBn(stream).toNumber()
     const json = {
       name: 'type',
       entries: []
@@ -361,14 +361,14 @@ const sectionParsers = _exports.sectionParsers = {
         params: []
       }
 
-      const paramCount = leb.readUint(stream)
+      const paramCount = leb.unsigned.readBn(stream).toNumber()
 
       // parse the entries
       for (let q = 0; q < paramCount; q++) {
         const type = stream.read(1)[0]
         entry.params.push(LANGUAGE_TYPES[type])
       }
-      const numOfReturns = leb.readUint(stream)
+      const numOfReturns = leb.unsigned.readBn(stream).toNumber()
       if (numOfReturns) {
         type = stream.read(1)[0]
         entry.return_type = LANGUAGE_TYPES[type]
@@ -379,7 +379,7 @@ const sectionParsers = _exports.sectionParsers = {
     return json
   },
   'import': (stream) => {
-    const numberOfEntries = leb.readUint(stream)
+    const numberOfEntries = leb.unsigned.readBn(stream).toNumber()
     const json = {
       name: 'import',
       entries: []
@@ -387,34 +387,34 @@ const sectionParsers = _exports.sectionParsers = {
 
     for (let i = 0; i < numberOfEntries; i++) {
       const entry = {}
-      const moduleLen = leb.readUint(stream)
+      const moduleLen = leb.unsigned.readBn(stream).toNumber()
       entry.moduleStr = stream.read(moduleLen).toString()
 
-      const fieldLen = leb.readUint(stream)
+      const fieldLen = leb.unsigned.readBn(stream).toNumber()
       entry.fieldStr = stream.read(fieldLen).toString()
       const kind = stream.read(1)[0] // read single byte
       entry.kind = EXTERNAL_KIND[kind]
-      entry.index = leb.readUint(stream)
+      entry.index = leb.unsigned.readBn(stream).toNumber()
 
       json.entries.push(entry)
     }
     return json
   },
   'function': (stream) => {
-    const numberOfEntries = leb.readUint(stream)
+    const numberOfEntries = leb.unsigned.readBn(stream).toNumber()
     const json = {
       name: 'function',
       entries: []
     }
 
     for (let i = 0; i < numberOfEntries; i++) {
-      const entry = leb.readUint(stream)
+      const entry = leb.unsigned.readBn(stream).toNumber()
       json.entries.push(entry)
     }
     return json
   },
   'table': (stream) => {
-    const numberOfEntries = leb.readUint(stream)
+    const numberOfEntries = leb.unsigned.readBn(stream).toNumber()
     const json = {
       name: 'table',
       entries: []
@@ -431,7 +431,7 @@ const sectionParsers = _exports.sectionParsers = {
     return json
   },
   'memory': (stream) => {
-    const numberOfEntries = leb.readUint(stream)
+    const numberOfEntries = leb.unsigned.readBn(stream).toNumber()
     const json = {
       name: 'memory',
       entries: []
@@ -444,7 +444,7 @@ const sectionParsers = _exports.sectionParsers = {
     return json
   },
   'global': (stream) => {
-    const numberOfEntries = leb.readUint(stream)
+    const numberOfEntries = leb.unsigned.readBn(stream).toNumber()
     const json = {
       name: 'global',
       entries: []
@@ -460,19 +460,19 @@ const sectionParsers = _exports.sectionParsers = {
     return json
   },
   'export': (stream) => {
-    const numberOfEntries = leb.readUint(stream)
+    const numberOfEntries = leb.unsigned.readBn(stream).toNumber()
     const json = {
       name: 'export',
       entries: []
     }
 
     for (let i = 0; i < numberOfEntries; i++) {
-      const strLength = leb.readUint(stream)
+      const strLength = leb.unsigned.readBn(stream).toNumber()
       const entry = {}
       entry.field_str = stream.read(strLength).toString()
       const kind = stream.read(1)[0]
       entry.kind = EXTERNAL_KIND[kind]
-      entry.index = leb.readUint(stream)
+      entry.index = leb.unsigned.readBn(stream).toNumber()
       json.entries.push(entry)
     }
     return json
@@ -482,11 +482,11 @@ const sectionParsers = _exports.sectionParsers = {
       name: 'start'
     }
 
-    json.index = leb.readUint(stream)
+    json.index = leb.unsigned.readBn(stream).toNumber()
     return json
   },
   'element': (stream) => {
-    const numberOfEntries = leb.readUint(stream)
+    const numberOfEntries = leb.unsigned.readBn(stream).toNumber()
     const json = {
       name: 'element',
       entries: []
@@ -497,11 +497,11 @@ const sectionParsers = _exports.sectionParsers = {
         elements: []
       }
 
-      entry.index = leb.readUint(stream)
+      entry.index = leb.unsigned.readBn(stream).toNumber()
       entry.offset = _exports.parseInitExpr(stream)
-      const numElem = leb.readUint(stream)
+      const numElem = leb.unsigned.readBn(stream).toNumber()
       for (let i = 0; i < numElem; i++) {
-        const elem = leb.readUint(stream)
+        const elem = leb.unsigned.readBn(stream).toNumber()
         entry.elements.push(elem)
       }
 
@@ -510,7 +510,7 @@ const sectionParsers = _exports.sectionParsers = {
     return json
   },
   'code': (stream) => {
-    const numberOfEntries = leb.readUint(stream)
+    const numberOfEntries = leb.unsigned.readBn(stream).toNumber()
     const json = {
       name: 'code',
       entries: []
@@ -522,15 +522,15 @@ const sectionParsers = _exports.sectionParsers = {
         code: []
       }
 
-      let bodySize = leb.readUint(stream)
+      let bodySize = leb.unsigned.readBn(stream).toNumber()
       const endBytes = stream.bytesRead + bodySize
       // parse locals
-      const localCount = leb.readUint(stream)
+      const localCount = leb.unsigned.readBn(stream).toNumber()
       bodySize -= localCount
 
       for (let q = 0; q < localCount; q++) {
         const local = {}
-        local.count = leb.readUint(stream)
+        local.count = leb.unsigned.readBn(stream).toNumber()
         const type = stream.read(1)[0]
         local.type = LANGUAGE_TYPES[type]
         codeBody.locals.push(local)
@@ -547,7 +547,7 @@ const sectionParsers = _exports.sectionParsers = {
     return json
   },
   'data': (stream) => {
-    const numberOfEntries = leb.readUint(stream)
+    const numberOfEntries = leb.unsigned.readBn(stream).toNumber()
     const json = {
       name: 'data',
       entries: []
@@ -555,9 +555,9 @@ const sectionParsers = _exports.sectionParsers = {
 
     for (let i = 0; i < numberOfEntries; i++) {
       const entry = {}
-      entry.index = leb.readUint(stream)
+      entry.index = leb.unsigned.readBn(stream).toNumber()
       entry.offset = _exports.parseInitExpr(stream)
-      const segmentSize = leb.readUint(stream)
+      const segmentSize = leb.unsigned.readBn(stream).toNumber()
       entry.data = stream.read(segmentSize)
 
       json.entries.push(entry)
@@ -590,7 +590,7 @@ _exports.parseOp = (stream) => {
 _exports.parseCustom = (header, stream) => {
   const json = {}
   const section = new Stream(stream.read(header.size))
-  const nameLen = leb.readUint(section)
+  const nameLen = leb.unsigned.readBn(section).toNumber()
   const name = section.read(nameLen)
   json.name = name.toString()
   json.payload = [...section.buffer]
