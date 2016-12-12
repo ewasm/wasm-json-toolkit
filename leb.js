@@ -38,7 +38,7 @@ exports.unsigned = {
   encode: (num) => {
     const stream = new Stream()
     exports.unsigned.write(num, stream)
-    return [...stream.buffer]
+    return stream.buffer
   },
   decode: (buffer) => {
     const stream = new Stream(buffer)
@@ -96,11 +96,10 @@ exports.signed = {
   encode: (num) => {
     const stream = new Stream()
     exports.signed.write(num, stream)
-    return [...stream.buffer]
+    return stream.buffer
   },
   decode: (buffer) => {
     const stream = new Stream(buffer)
     return exports.signed.read(stream)
   }
 }
-
