@@ -61,6 +61,7 @@ _exports.generateInitExpr = (json, stream) => {
 }
 
 const SECTIONS_IDS = _exports.SECTIONS_IDS = {
+  'custom': 0,
   'type': 1,
   'import': 2,
   'function': 3,
@@ -300,6 +301,17 @@ _exports.immediataryGenerators = {
 }
 
 const sectionGenerators = {
+  'custom': (json, stream = new Stream()) => {
+    stream.write([0])
+    const payload = new Stream()
+    leb.unsigned.write(json.sectionName.length, payload)
+    payload.write(json.sectionName)
+    payload.write(json.payload)
+    // write the size of the payload
+    leb.unsigned.write(payload.bytesWrote, stream)
+    stream.write(payload.buffer)
+    return stream
+  },
   'type': (json, stream = new Stream()) => {
     stream.write([SECTIONS_IDS['type']])
     let binEntries = new Stream()
@@ -484,25 +496,10 @@ const sectionGenerators = {
 
 _exports.generate = (json, stream = new Stream()) => {
   _exports.generatePreramble(json.shift(), stream)
-  while (json.length && SECTIONS_IDS[json[0].name] === undefined) {
-    _exports.generateCustom(json.shift(), stream)
-  }
   for (let item of json) {
     sectionGenerators[item.name](item, stream)
   }
 
-  return stream
-}
-
-_exports.generateCustom = (json, stream = new Stream()) => {
-  stream.write([0])
-  const payload = new Stream()
-  leb.unsigned.write(json.name.length, payload)
-  payload.write(json.name)
-  payload.write(json.payload)
-  // write the size of the payload
-  leb.unsigned.write(payload.bytesWrote, stream)
-  stream.write(payload.buffer)
   return stream
 }
 

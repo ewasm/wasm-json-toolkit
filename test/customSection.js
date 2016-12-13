@@ -20,7 +20,8 @@ const expectedJson = [{
     0
   ]
 }, {
-  'name': 'a custom section',
+  'name': 'custom',
+  'sectionName': 'a custom section',
   'payload': 'this is the payload'
 }]
 

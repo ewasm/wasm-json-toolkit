@@ -280,6 +280,7 @@ const OPCODES = _exports.OPCODES = {
 }
 
 const SECTIONS_IDS = _exports.SECTIONS_IDS = {
+  0: 'custom',
   1: 'type',
   2: 'import',
   3: 'function',
@@ -347,6 +348,17 @@ _exports.immediataryParsers = {
 }
 
 const sectionParsers = _exports.sectionParsers = {
+  'custom': (stream, header) => {
+    const json = {
+      name: 'custom'
+    }
+    const section = new Stream(stream.read(header.size))
+    const nameLen = leb.unsigned.readBn(section).toNumber()
+    const name = section.read(nameLen)
+    json.sectionName = name.toString()
+    json.payload = [...section.buffer]
+    return json
+  },
   'type': (stream) => {
     const numberOfEntries = leb.unsigned.readBn(stream).toNumber()
     const json = {
@@ -587,27 +599,12 @@ _exports.parseOp = (stream) => {
   return json
 }
 
-_exports.parseCustom = (header, stream) => {
-  const json = {}
-  const section = new Stream(stream.read(header.size))
-  const nameLen = leb.unsigned.readBn(section).toNumber()
-  const name = section.read(nameLen)
-  json.name = name.toString()
-  json.payload = [...section.buffer]
-  return json
-}
-
 _exports.parse = (stream) => {
   const json = [_exports.parsePreramble(stream)]
   let header = _exports.parseSectionHeader(stream)
-  // parse custom headers
-  while (!stream.done && header.name === undefined) {
-    json.push(_exports.parseCustom(header, stream))
-    header = _exports.parseSectionHeader(stream)
-  }
 
   while (!stream.done) {
-    json.push(sectionParsers[header.name](stream))
+    json.push(sectionParsers[header.name](stream, header))
     header = _exports.parseSectionHeader(stream)
   }
   return json
