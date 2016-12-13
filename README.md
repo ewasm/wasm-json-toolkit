@@ -27,6 +27,27 @@ Install `-g` global for cli usage.
 `wasm2json [FILE]` given a file containing a wasm module produces a json representation  
 `json2wasm [FILE]` given a file containing a json representation produces a wasm module  
 
+# API
+## wasm2json
+
+converts a wasm binary into a json representation
+
+**Parameters**
+
+-   `Buffer`  
+
+Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+## json2wasm
+
+converts a json representation to a wasm binary
+
+**Parameters**
+
+-   `Object`  
+
+Returns **[Buffer](https://nodejs.org/api/buffer.html)** 
+
 ## exammple json output
 
 wast
@@ -103,27 +124,6 @@ json
   }
 ]
 ```
-
-# API
-## wasm2json
-
-converts a wasm binary into a json representation
-
-**Parameters**
-
--   `Buffer`  
-
-Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
-
-## json2wasm
-
-converts a json representation to a wasm binary
-
-**Parameters**
-
--   `Object`  
-
-Returns **[Buffer](https://nodejs.org/api/buffer.html)** 
 
 # LICENSE
 [MPL-2.0](https://tldrlegal.com/license/mozilla-public-license-2.0-(mpl-2))
