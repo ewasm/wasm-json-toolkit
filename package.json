@@ -10,12 +10,17 @@
     "test": "node --harmony ./test/index.js"
   },
   "keywords": [
-    "wasm"
+    "wasm",
+    "cli"
   ],
   "author": "mjbecze <mjbecze@gmail.com>",
   "license": "MPL-2.0",
   "dependencies": {
     "bn.js": "^4.11.6"
+  },
+  "bin": {
+    "wasm2json": "./bin/wasm2json",
+    "json2wasm": "./bin/json2wasm"
   },
   "devDependencies": {
     "browserify": "^13.0.0",

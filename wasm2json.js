@@ -570,7 +570,7 @@ const sectionParsers = _exports.sectionParsers = {
       entry.index = leb.unsigned.readBn(stream).toNumber()
       entry.offset = _exports.parseInitExpr(stream)
       const segmentSize = leb.unsigned.readBn(stream).toNumber()
-      entry.data = stream.read(segmentSize)
+      entry.data = [...stream.read(segmentSize)]
 
       json.entries.push(entry)
     }

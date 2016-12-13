@@ -20,6 +20,13 @@ const json = wasm2json(wasm)
 
 console.log(JSON.stringify(json, null, 2))
 ```
+
+# CLI
+Install `-g` global for cli usage.
+
+`wasm2json [FILE]` given a file containing a wasm module produces a json representation  
+`json2wasm [FILE]` given a file containing a json representation produces a wasm module  
+
 ## exammple json output
 
 wast
