@@ -16,14 +16,14 @@
   "author": "mjbecze <mjbecze@gmail.com>",
   "license": "MPL-2.0",
   "dependencies": {
-    "bn.js": "^4.11.6"
+    "bn.js": "^4.11.6",
+    "leb128": "0.0.0"
   },
   "bin": {
     "wasm2json": "./bin/wasm2json",
     "json2wasm": "./bin/json2wasm"
   },
   "devDependencies": {
-    "browserify": "^13.0.0",
     "coveralls": "^2.11.4",
     "istanbul": "^0.4.1",
     "standard": "^8.6.0",

@@ -1,5 +1,5 @@
 const Stream = require('./stream.js')
-const leb = require('./leb.js')
+const leb = require('leb128')
 const OP_IMMEDIATES = require('./immediates.json')
 
 const _exports = module.exports = (buf) => {

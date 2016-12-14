@@ -1,4 +1,4 @@
-const leb = require('./leb.js')
+const leb = require('leb128')
 const Stream = require('./stream.js')
 const OP_IMMEDIATES = require('./immediates.json')
 
