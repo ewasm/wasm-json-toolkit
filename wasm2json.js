@@ -80,7 +80,7 @@ _exports.parseSectionHeader = (stream) => {
   const size = leb.unsigned.readBn(stream).toNumber()
   return {
     id: id,
-    name: SECTIONS_IDS[id],
+    name: SECTION_IDS[id],
     size: size
   }
 }
@@ -279,7 +279,7 @@ const OPCODES = _exports.OPCODES = {
   0xbf: 'f64.reinterpret/i64'
 }
 
-const SECTIONS_IDS = _exports.SECTIONS_IDS = {
+const SECTION_IDS = _exports.SECTION_IDS = {
   0: 'custom',
   1: 'type',
   2: 'import',

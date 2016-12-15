@@ -60,7 +60,7 @@ _exports.generateInitExpr = (json, stream) => {
   _exports.generateOp({name: 'end', type: 'void'}, stream)
 }
 
-const SECTIONS_IDS = _exports.SECTIONS_IDS = {
+const SECTION_IDS = _exports.SECTION_IDS = {
   'custom': 0,
   'type': 1,
   'import': 2,
@@ -313,7 +313,7 @@ const sectionGenerators = {
     return stream
   },
   'type': (json, stream = new Stream()) => {
-    stream.write([SECTIONS_IDS['type']])
+    stream.write([SECTION_IDS['type']])
     let binEntries = new Stream()
 
     leb.unsigned.write(json.entries.length, binEntries)
@@ -340,7 +340,7 @@ const sectionGenerators = {
     return stream
   },
   'import': (json, stream) => {
-    stream.write([SECTIONS_IDS['import']])
+    stream.write([SECTION_IDS['import']])
     let binEntries = new Stream()
     leb.unsigned.write(json.entries.length, binEntries) // write the number of entries
     for (let entry of json.entries) {
@@ -358,7 +358,7 @@ const sectionGenerators = {
     return stream
   },
   'function': (json, stream = new Stream()) => {
-    stream.write([SECTIONS_IDS['function']])
+    stream.write([SECTION_IDS['function']])
 
     let binEntries = new Stream()
     leb.unsigned.write(json.entries.length, binEntries)
@@ -370,7 +370,7 @@ const sectionGenerators = {
     return stream
   },
   'table': (json, stream) => {
-    stream.write([SECTIONS_IDS['table']])
+    stream.write([SECTION_IDS['table']])
     let binEntries = new Stream()
     // write table_type
     leb.unsigned.write(json.entries.length, binEntries)
@@ -385,7 +385,7 @@ const sectionGenerators = {
     return stream
   },
   'memory': (json, stream) => {
-    stream.write([SECTIONS_IDS['memory']])
+    stream.write([SECTION_IDS['memory']])
     let binEntries = new Stream()
     leb.unsigned.write(json.entries.length, binEntries)
     for (let entry of json.entries) {
@@ -396,7 +396,7 @@ const sectionGenerators = {
     return stream
   },
   'global': (json, stream) => {
-    stream.write([SECTIONS_IDS['global']])
+    stream.write([SECTION_IDS['global']])
     let binEntries = new Stream()
 
     leb.unsigned.write(json.entries.length, binEntries)
@@ -410,7 +410,7 @@ const sectionGenerators = {
     return stream
   },
   'export': (json, stream = new Stream()) => {
-    stream.write([SECTIONS_IDS['export']])
+    stream.write([SECTION_IDS['export']])
 
     let binEntries = new Stream()
     leb.unsigned.write(json.entries.length, binEntries)
@@ -427,7 +427,7 @@ const sectionGenerators = {
     return stream
   },
   'start': (json, stream) => {
-    stream.write([SECTIONS_IDS['start']])
+    stream.write([SECTION_IDS['start']])
     const index = new Stream()
     leb.unsigned.write(json.index, index)
     leb.unsigned.write(index.bytesWrote, stream)
@@ -435,7 +435,7 @@ const sectionGenerators = {
     return stream
   },
   'element': (json, stream) => {
-    stream.write([SECTIONS_IDS['element']])
+    stream.write([SECTION_IDS['element']])
     let binEntries = new Stream()
     leb.unsigned.write(json.entries.length, binEntries)
 
@@ -453,7 +453,7 @@ const sectionGenerators = {
     return stream
   },
   'code': (json, stream = new Stream()) => {
-    stream.write([SECTIONS_IDS['code']])
+    stream.write([SECTION_IDS['code']])
     let binEntries = new Stream()
     leb.unsigned.write(json.entries.length, binEntries)
 
@@ -478,7 +478,7 @@ const sectionGenerators = {
     return stream
   },
   'data': (json, stream) => {
-    stream.write([SECTIONS_IDS['data']])
+    stream.write([SECTION_IDS['data']])
     let binEntries = new Stream()
     leb.unsigned.write(json.entries.length, binEntries)
     for (let entry of json.entries) {

@@ -1,3 +1,4 @@
-require('./text2json.js')
-require('./roundtrips.js')
-require('./customSection.js')
+require('./text2json')
+require('./roundtrips')
+require('./customSection')
+require('./transformers')
