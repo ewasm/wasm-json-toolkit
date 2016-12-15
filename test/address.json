@@ -1,0 +1,302 @@
+[
+  {
+    "name": "preramble",
+    "magic": [
+      0,
+      97,
+      115,
+      109
+    ],
+    "version": [
+      13,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "name": "type",
+    "entries": [
+      {
+        "form": "func",
+        "params": [
+          "i32"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "function",
+    "entries": [
+      0,
+      0
+    ]
+  },
+  {
+    "name": "memory",
+    "entries": [
+      {
+        "flags": 0,
+        "intial": 1
+      }
+    ]
+  },
+  {
+    "name": "export",
+    "entries": [
+      {
+        "field_str": "good",
+        "kind": "Function",
+        "index": 1
+      },
+      {
+        "field_str": "bad",
+        "kind": "Function",
+        "index": 2
+      }
+    ]
+  },
+  {
+    "name": "code",
+    "entries": [
+      {
+        "locals": [],
+        "code": [
+          {
+            "name": "get_local",
+            "immediaties": "0"
+          },
+          {
+            "return_type": "i32",
+            "name": "load8_u",
+            "immediaties": {
+              "flags": 0,
+              "offset": 0
+            }
+          },
+          {
+            "name": "call",
+            "immediaties": "0"
+          },
+          {
+            "name": "get_local",
+            "immediaties": "0"
+          },
+          {
+            "return_type": "i32",
+            "name": "load8_u",
+            "immediaties": {
+              "flags": 0,
+              "offset": 1
+            }
+          },
+          {
+            "name": "call",
+            "immediaties": "0"
+          },
+          {
+            "name": "get_local",
+            "immediaties": "0"
+          },
+          {
+            "return_type": "i32",
+            "name": "load8_u",
+            "immediaties": {
+              "flags": 0,
+              "offset": 2
+            }
+          },
+          {
+            "name": "call",
+            "immediaties": "0"
+          },
+          {
+            "name": "get_local",
+            "immediaties": "0"
+          },
+          {
+            "return_type": "i32",
+            "name": "load8_u",
+            "immediaties": {
+              "flags": 0,
+              "offset": 25
+            }
+          },
+          {
+            "name": "call",
+            "immediaties": "0"
+          },
+          {
+            "name": "get_local",
+            "immediaties": "0"
+          },
+          {
+            "return_type": "i32",
+            "name": "load16_u",
+            "immediaties": {
+              "flags": 1,
+              "offset": 0
+            }
+          },
+          {
+            "name": "call",
+            "immediaties": "0"
+          },
+          {
+            "name": "get_local",
+            "immediaties": "0"
+          },
+          {
+            "return_type": "i32",
+            "name": "load16_u",
+            "immediaties": {
+              "flags": 0,
+              "offset": 0
+            }
+          },
+          {
+            "name": "call",
+            "immediaties": "0"
+          },
+          {
+            "name": "get_local",
+            "immediaties": "0"
+          },
+          {
+            "return_type": "i32",
+            "name": "load16_u",
+            "immediaties": {
+              "flags": 0,
+              "offset": 1
+            }
+          },
+          {
+            "name": "call",
+            "immediaties": "0"
+          },
+          {
+            "name": "get_local",
+            "immediaties": "0"
+          },
+          {
+            "return_type": "i32",
+            "name": "load16_u",
+            "immediaties": {
+              "flags": 1,
+              "offset": 2
+            }
+          },
+          {
+            "name": "call",
+            "immediaties": "0"
+          },
+          {
+            "name": "get_local",
+            "immediaties": "0"
+          },
+          {
+            "return_type": "i32",
+            "name": "load16_u",
+            "immediaties": {
+              "flags": 0,
+              "offset": 25
+            }
+          },
+          {
+            "name": "call",
+            "immediaties": "0"
+          },
+          {
+            "name": "get_local",
+            "immediaties": "0"
+          },
+          {
+            "return_type": "i32",
+            "name": "load",
+            "immediaties": {
+              "flags": 2,
+              "offset": 0
+            }
+          },
+          {
+            "name": "call",
+            "immediaties": "0"
+          },
+          {
+            "name": "get_local",
+            "immediaties": "0"
+          },
+          {
+            "return_type": "i32",
+            "name": "load",
+            "immediaties": {
+              "flags": 0,
+              "offset": 1
+            }
+          },
+          {
+            "name": "call",
+            "immediaties": "0"
+          },
+          {
+            "name": "get_local",
+            "immediaties": "0"
+          },
+          {
+            "return_type": "i32",
+            "name": "load",
+            "immediaties": {
+              "flags": 1,
+              "offset": 2
+            }
+          },
+          {
+            "name": "call",
+            "immediaties": "0"
+          },
+          {
+            "name": "get_local",
+            "immediaties": "0"
+          },
+          {
+            "return_type": "i32",
+            "name": "load",
+            "immediaties": {
+              "flags": 0,
+              "offset": 25
+            }
+          },
+          {
+            "name": "call",
+            "immediaties": "0"
+          },
+          {
+            "name": "end"
+          }
+        ]
+      },
+      {
+        "locals": [],
+        "code": [
+          {
+            "name": "get_local",
+            "immediaties": "0"
+          },
+          {
+            "return_type": "i32",
+            "name": "load",
+            "immediaties": {
+              "flags": 2,
+              "offset": 4294967295
+            }
+          },
+          {
+            "name": "drop"
+          },
+          {
+            "name": "end"
+          }
+        ]
+      }
+    ]
+  }]
