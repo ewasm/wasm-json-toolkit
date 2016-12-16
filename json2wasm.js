@@ -19,45 +19,13 @@ const LANGUAGE_TYPES = _exports.LANGUAGE_TYPES = {
   'block_type': 0x40
 }
 
-/**
- * generates a [`global_type`](https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#global_type)
- */
-_exports.generateGlobalType = (json, stream) => {
-  stream.write([LANGUAGE_TYPES[json.contentType]])
-  stream.write([json.mutability])
-}
-
 // https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#external_kind
 // A single-byte unsigned integer indicating the kind of definition being imported or defined:
 const EXTERNAL_KIND = _exports.EXTERNAL_KIND = {
-  'Function': 0,
-  'Table': 1,
-  'Memory': 2,
-  'Global': 3
-}
-
-/**
- * Generates a [resizable_limits](https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#resizable_limits)
- * @param {Object} json
- * @param {Stream} stream
- */
-_exports.generateResizableLimits = (json, stream) => {
-  leb.unsigned.write(Number(json.maximum !== undefined), stream) // the flags
-  leb.unsigned.write(json.intial, stream)
-
-  if (json.maximum !== undefined) {
-    leb.unsigned.write(json.maximum, stream)
-  }
-}
-
-/**
- * Generates a [init_expr](https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#resizable_limits)
- * The encoding of an initializer expression is the normal encoding of the
- * expression followed by the end opcode as a delimiter.
- */
-_exports.generateInitExpr = (json, stream) => {
-  _exports.generateOp(json, stream)
-  _exports.generateOp({name: 'end', type: 'void'}, stream)
+  'function': 0,
+  'table': 1,
+  'memory': 2,
+  'global': 3
 }
 
 const SECTION_IDS = _exports.SECTION_IDS = {
@@ -250,6 +218,45 @@ const OPCODES = _exports.OPCODES = {
   'f64.reinterpret/i64': 0xbf
 }
 
+_exports.typeGenerators = {
+  'function': (json, stream) => {
+    stream.write([json])
+  },
+  table: (json, stream) => {
+    stream.write([LANGUAGE_TYPES[json.elementType]])
+    _exports.typeGenerators.memory(json.limits, stream)
+  },
+  /**
+   * generates a [`global_type`](https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#global_type)
+   */
+  global: (json, stream) => {
+    stream.write([LANGUAGE_TYPES[json.contentType]])
+    stream.write([json.mutability])
+  },
+  /**
+   * Generates a [resizable_limits](https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#resizable_limits)
+   * @param {Object} json
+   * @param {Stream} stream
+   */
+  memory: (json, stream) => {
+    leb.unsigned.write(Number(json.maximum !== undefined), stream) // the flags
+    leb.unsigned.write(json.intial, stream)
+
+    if (json.maximum !== undefined) {
+      leb.unsigned.write(json.maximum, stream)
+    }
+  },
+  /**
+   * Generates a [init_expr](https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#resizable_limits)
+   * The encoding of an initializer expression is the normal encoding of the
+   * expression followed by the end opcode as a delimiter.
+   */
+  initExpr: (json, stream) => {
+    _exports.generateOp(json, stream)
+    _exports.generateOp({name: 'end', type: 'void'}, stream)
+  }
+}
+
 _exports.immediataryGenerators = {
   'varuint1': (json, stream) => {
     stream.write([json])
@@ -350,8 +357,8 @@ const sectionGenerators = {
       // write the field string
       leb.unsigned.write(entry.fieldStr.length, binEntries)
       binEntries.write(entry.fieldStr)
-      // write the import type
-      binEntries.write([EXTERNAL_KIND[entry.kind], entry.index])
+      binEntries.write([EXTERNAL_KIND[entry.kind]])
+      _exports.typeGenerators[entry.kind](entry.type, binEntries)
     }
     leb.unsigned.write(binEntries.bytesWrote, stream) // write the size
     stream.write(binEntries.buffer)
@@ -375,8 +382,7 @@ const sectionGenerators = {
     // write table_type
     leb.unsigned.write(json.entries.length, binEntries)
     for (let entry of json.entries) {
-      binEntries.write([LANGUAGE_TYPES[entry.elementType]])
-      _exports.generateResizableLimits(entry.limits, binEntries)
+      _exports.typeGenerators.table(entry, binEntries)
     }
 
     leb.unsigned.write(binEntries.bytesWrote, stream)
@@ -389,7 +395,7 @@ const sectionGenerators = {
     let binEntries = new Stream()
     leb.unsigned.write(json.entries.length, binEntries)
     for (let entry of json.entries) {
-      _exports.generateResizableLimits(entry, binEntries)
+      _exports.typeGenerators.memory(entry, binEntries)
     }
     leb.unsigned.write(binEntries.bytesWrote, stream)
     stream.write(binEntries.buffer)
@@ -401,8 +407,8 @@ const sectionGenerators = {
 
     leb.unsigned.write(json.entries.length, binEntries)
     for (let entry of json.entries) {
-      _exports.generateGlobalType(entry.type, binEntries)
-      _exports.generateInitExpr(entry.init, binEntries)
+      _exports.typeGenerators.global(entry.type, binEntries)
+      _exports.typeGenerators.initExpr(entry.init, binEntries)
     }
 
     leb.unsigned.write(binEntries.bytesWrote, stream)
@@ -441,7 +447,7 @@ const sectionGenerators = {
 
     for (let entry of json.entries) {
       leb.unsigned.write(entry.index, binEntries)
-      _exports.generateInitExpr(entry.offset, binEntries)
+      _exports.typeGenerators.initExpr(entry.offset, binEntries)
       leb.unsigned.write(entry.elements.length, binEntries)
       for (let elem of entry.elements) {
         leb.unsigned.write(elem, binEntries)
@@ -483,7 +489,7 @@ const sectionGenerators = {
     leb.unsigned.write(json.entries.length, binEntries)
     for (let entry of json.entries) {
       leb.unsigned.write(entry.index, binEntries)
-      _exports.generateInitExpr(entry.offset, binEntries)
+      _exports.typeGenerators.initExpr(entry.offset, binEntries)
       leb.unsigned.write(entry.data.length, binEntries)
       binEntries.write(entry.data)
     }

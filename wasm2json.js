@@ -19,52 +19,13 @@ const LANGUAGE_TYPES = _exports.LANGUAGE_TYPES = {
   0x40: 'block_type'
 }
 
-/**
- * parses a [`global_type`](https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#global_type)
- * @param {Stream} stream
- * @return {Object}
- */
-_exports.parseGlobalType = (stream) => {
-  const global = {}
-  let type = stream.read(1)[0]
-  global.contentType = LANGUAGE_TYPES[type]
-  global.mutability = stream.read(1)[0]
-  return global
-}
-
 // https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#external_kind
 // A single-byte unsigned integer indicating the kind of definition being imported or defined:
 const EXTERNAL_KIND = _exports.EXTERNAL_KIND = {
-  0: 'Function',
-  1: 'Table',
-  2: 'Memory',
-  3: 'Global'
-}
-
-/**
- * Parses a [resizable_limits](https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#resizable_limits)
- * @param {Stream} stream
- * return {Object}
- */
-_exports.parseResizableLimits = (stream) => {
-  const limits = {}
-  limits.flags = leb.unsigned.readBn(stream).toNumber()
-  limits.intial = leb.unsigned.readBn(stream).toNumber()
-  if (limits.flags === 1) {
-    limits.maximum = leb.unsigned.readBn(stream).toNumber()
-  }
-  return limits
-}
-
-/**
- * Parses a [init_expr](https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#resizable_limits)
- * The encoding of an initializer expression is the normal encoding of the
- * expression followed by the end opcode as a delimiter.
- */
-_exports.parseInitExpr = (stream) => {
-  const op = _exports.parseOp(stream)
-  stream.read(1) // skip the `end`
-  return op
+  0: 'function',
+  1: 'table',
+  2: 'memory',
+  3: 'global'
 }
 
 _exports.parsePreramble = (stream) => {
@@ -347,6 +308,55 @@ _exports.immediataryParsers = {
   }
 }
 
+_exports.typeParsers = {
+  'function': (stream) => {
+    return leb.unsigned.readBn(stream).toNumber()
+  },
+  table: (stream) => {
+    const entry = {}
+    const type = stream.read(1)[0] // read single byte
+    entry.elementType = LANGUAGE_TYPES[type]
+    entry.limits = _exports.typeParsers.memory(stream)
+    return entry
+  },
+  /**
+   * parses a [`global_type`](https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#global_type)
+   * @param {Stream} stream
+   * @return {Object}
+   */
+  global: (stream) => {
+    const global = {}
+    let type = stream.read(1)[0]
+    global.contentType = LANGUAGE_TYPES[type]
+    global.mutability = stream.read(1)[0]
+    return global
+  },
+  /**
+   * Parses a [resizable_limits](https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#resizable_limits)
+   * @param {Stream} stream
+   * return {Object}
+   */
+  memory: (stream) => {
+    const limits = {}
+    limits.flags = leb.unsigned.readBn(stream).toNumber()
+    limits.intial = leb.unsigned.readBn(stream).toNumber()
+    if (limits.flags === 1) {
+      limits.maximum = leb.unsigned.readBn(stream).toNumber()
+    }
+    return limits
+  },
+  /**
+   * Parses a [init_expr](https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#resizable_limits)
+   * The encoding of an initializer expression is the normal encoding of the
+   * expression followed by the end opcode as a delimiter.
+   */
+  initExpr: (stream) => {
+    const op = _exports.parseOp(stream)
+    stream.read(1) // skip the `end`
+    return op
+  }
+}
+
 const sectionParsers = _exports.sectionParsers = {
   'custom': (stream, header) => {
     const json = {
@@ -406,7 +416,7 @@ const sectionParsers = _exports.sectionParsers = {
       entry.fieldStr = stream.read(fieldLen).toString()
       const kind = stream.read(1)[0] // read single byte
       entry.kind = EXTERNAL_KIND[kind]
-      entry.index = leb.unsigned.readBn(stream).toNumber()
+      entry.type = _exports.typeParsers[entry.kind](stream)
 
       json.entries.push(entry)
     }
@@ -434,10 +444,7 @@ const sectionParsers = _exports.sectionParsers = {
 
     // parse table_type
     for (let i = 0; i < numberOfEntries; i++) {
-      const entry = {}
-      const type = stream.read(1)[0] // read single byte
-      entry.elementType = LANGUAGE_TYPES[type]
-      entry.limits = _exports.parseResizableLimits(stream)
+      const entry = _exports.typeParsers.table(stream)
       json.entries.push(entry)
     }
     return json
@@ -450,7 +457,7 @@ const sectionParsers = _exports.sectionParsers = {
     }
 
     for (let i = 0; i < numberOfEntries; i++) {
-      const entry = _exports.parseResizableLimits(stream)
+      const entry = _exports.typeParsers.memory(stream)
       json.entries.push(entry)
     }
     return json
@@ -464,8 +471,8 @@ const sectionParsers = _exports.sectionParsers = {
 
     for (let i = 0; i < numberOfEntries; i++) {
       const entry = {}
-      entry.type = _exports.parseGlobalType(stream)
-      entry.init = _exports.parseInitExpr(stream)
+      entry.type = _exports.typeParsers.global(stream)
+      entry.init = _exports.typeParsers.initExpr(stream)
 
       json.entries.push(entry)
     }
@@ -510,7 +517,7 @@ const sectionParsers = _exports.sectionParsers = {
       }
 
       entry.index = leb.unsigned.readBn(stream).toNumber()
-      entry.offset = _exports.parseInitExpr(stream)
+      entry.offset = _exports.typeParsers.initExpr(stream)
       const numElem = leb.unsigned.readBn(stream).toNumber()
       for (let i = 0; i < numElem; i++) {
         const elem = leb.unsigned.readBn(stream).toNumber()
@@ -568,7 +575,7 @@ const sectionParsers = _exports.sectionParsers = {
     for (let i = 0; i < numberOfEntries; i++) {
       const entry = {}
       entry.index = leb.unsigned.readBn(stream).toNumber()
-      entry.offset = _exports.parseInitExpr(stream)
+      entry.offset = _exports.typeParsers.initExpr(stream)
       const segmentSize = leb.unsigned.readBn(stream).toNumber()
       entry.data = [...stream.read(segmentSize)]
 

@@ -6,6 +6,7 @@ const json2wasm = require('../json2wasm.js')
 
 tape('round trips', t => {
   fs.readdir(path.join(__dirname, './wasm'), async (err, files) => {
+    // files = ['func_ptrs.wast.0.wasm']
     if (err) throw err
     for (let file of files) {
       t.comment(file)
