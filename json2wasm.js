@@ -523,9 +523,9 @@ _exports.generateOp = (json, stream = new Stream()) => {
 
   stream.write([OPCODES[name]])
 
-  const immediaties = OP_IMMEDIATES[json.name === 'const' ? json.return_type : json.name]
-  if (immediaties) {
-    _exports.immediataryGenerators[immediaties](json.immediaties, stream)
+  const immediates = OP_IMMEDIATES[json.name === 'const' ? json.return_type : json.name]
+  if (immediates) {
+    _exports.immediataryGenerators[immediates](json.immediates, stream)
   }
   return stream
 }

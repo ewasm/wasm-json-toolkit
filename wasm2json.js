@@ -599,9 +599,9 @@ _exports.parseOp = (stream) => {
 
   json.name = name
 
-  const immediaties = OP_IMMEDIATES[name === 'const' ? type : name]
-  if (immediaties) {
-    json.immediaties = _exports.immediataryParsers[immediaties](stream)
+  const immediates = OP_IMMEDIATES[name === 'const' ? type : name]
+  if (immediates) {
+    json.immediates = _exports.immediataryParsers[immediates](stream)
   }
   return json
 }
