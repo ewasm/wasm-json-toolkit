@@ -28,7 +28,9 @@ Install `-g` global for cli usage.
 `json2wasm [FILE]` given a file containing a json representation produces a wasm module  
 
 # API
-## wasm2json
+# wasm2json
+
+[./index.js:6-6](https://github.com/ewasm/wasm-json-toolkit/blob/f349ee056b8e5f2691f83e345fe01d9ec0f8807a/./index.js#L6-L6 "Source code on GitHub")
 
 converts a wasm binary into a json representation
 
@@ -38,7 +40,9 @@ converts a wasm binary into a json representation
 
 Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
-## json2wasm
+# json2wasm
+
+[./index.js:13-13](https://github.com/ewasm/wasm-json-toolkit/blob/f349ee056b8e5f2691f83e345fe01d9ec0f8807a/./index.js#L13-L13 "Source code on GitHub")
 
 converts a json representation to a wasm binary
 
@@ -47,6 +51,29 @@ converts a json representation to a wasm binary
 -   `Object`  
 
 Returns **[Buffer](https://nodejs.org/api/buffer.html)** 
+
+# text2json
+
+[./index.js:27-27](https://github.com/ewasm/wasm-json-toolkit/blob/f349ee056b8e5f2691f83e345fe01d9ec0f8807a/./index.js#L27-L27 "Source code on GitHub")
+
+converts text to json. The only text accepted is a simple list of opcode name and immediates
+
+**Parameters**
+
+-   `String`  
+
+**Examples**
+
+```javascript
+const codeStr = `
+i64.const 1
+i64.const 2
+i64.add
+`
+const json = text2json(codeStr)
+```
+
+Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
 ## exammple json output
 
