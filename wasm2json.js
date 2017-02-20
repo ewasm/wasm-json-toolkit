@@ -545,7 +545,6 @@ const sectionParsers = _exports.sectionParsers = {
       const endBytes = stream.bytesRead + bodySize
       // parse locals
       const localCount = leb.unsigned.readBn(stream).toNumber()
-      bodySize -= localCount
 
       for (let q = 0; q < localCount; q++) {
         const local = {}
