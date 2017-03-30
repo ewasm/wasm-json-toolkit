@@ -24,7 +24,7 @@
     "json2wasm": "./bin/json2wasm"
   },
   "devDependencies": {
-    "coveralls": "^2.11.4",
+    "coveralls": "^2.13.0",
     "fs-extra": "^2.1.2",
     "istanbul": "^0.4.1",
     "standard": "^9.0.2",
