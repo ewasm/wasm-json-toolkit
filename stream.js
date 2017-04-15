@@ -1,6 +1,6 @@
 // since stream in nodejs don't really work the way I would want them too
 module.exports = class FakeStream {
-  constructor (buf = new Buffer([])) {
+  constructor (buf = Buffer.from([])) {
     this.buffer = buf
     this._bytesRead = 0
   }
@@ -14,7 +14,7 @@ module.exports = class FakeStream {
 
   write (buf) {
     if (!Buffer.isBuffer(buf)) {
-      buf = new Buffer(buf)
+      buf = Buffer.from(buf)
     }
     this.buffer = Buffer.concat([this.buffer, buf])
   }

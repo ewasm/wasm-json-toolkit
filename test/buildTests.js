@@ -24,4 +24,3 @@ for (let file of files) {
     }
   }
 }
-
