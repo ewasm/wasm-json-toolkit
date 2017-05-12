@@ -1,4 +1,6 @@
 # SYNOPSIS 
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/ewasm/wasm-json-toolkit.svg)](https://greenkeeper.io/)
 [![NPM Package](https://img.shields.io/npm/v/wasm-json-toolkit.svg?style=flat-square)](https://www.npmjs.org/package/wasm-json-toolkit)
 [![Build Status](https://img.shields.io/travis/ewasm/wasm-json-toolkit.svg?branch=master&style=flat-square)](https://travis-ci.org/ewasm/wasm-json-toolkit)
 [![Coverage Status](https://img.shields.io/coveralls/ewasm/wasm-json-toolkit.svg?style=flat-square)](https://coveralls.io/r/ewasm/wasm-json-toolkit)
