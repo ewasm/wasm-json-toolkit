@@ -17,7 +17,7 @@
   "license": "MPL-2.0",
   "dependencies": {
     "bn.js": "^4.11.6",
-    "leb128": "0.0.0"
+    "leb128": "0.0.2"
   },
   "bin": {
     "wasm2json": "./bin/wasm2json",
