@@ -1,5 +1,5 @@
-const Stream = require('./stream.js')
 const leb = require('leb128')
+const Stream = require('buffer-pipe')
 const OP_IMMEDIATES = require('./immediates.json')
 
 const _exports = module.exports = (buf) => {
@@ -609,7 +609,7 @@ _exports.parse = (stream) => {
   const json = [_exports.parsePreramble(stream)]
   let header = _exports.parseSectionHeader(stream)
 
-  while (!stream.done) {
+  while (!stream.end) {
     json.push(sectionParsers[header.name](stream, header))
     header = _exports.parseSectionHeader(stream)
   }
