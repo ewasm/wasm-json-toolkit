@@ -421,9 +421,10 @@ const sectionGenerators = {
     let binEntries = new Stream()
     leb.unsigned.write(json.entries.length, binEntries)
     for (let entry of json.entries) {
-      const strLen = entry.field_str.length
+      const fieldStr = Buffer.from(entry.field_str)
+      const strLen = fieldStr.length
       leb.unsigned.write(strLen, binEntries)
-      binEntries.write(entry.field_str)
+      binEntries.write(fieldStr)
       binEntries.write([EXTERNAL_KIND[entry.kind]])
       leb.unsigned.write(entry.index, binEntries)
     }

@@ -5,8 +5,8 @@ const path = require('path')
 const files = fs.readdirSync(path.join(__dirname, './testsuite'))
 for (let file of files) {
   if (file.split('.')[1] === 'wast') {
-    const binPath = path.join(__dirname, './wabt/out/wast2wasm')
-    const str = `${binPath} ${__dirname}/testsuite/${file} --spec -o ${__dirname}/wasm/${file}.json`
+    const binPath = path.join(__dirname, './wabt/bin/wast2json')
+    const str = `${binPath} ${__dirname}/testsuite/${file} -o ${__dirname}/wasm/${file}.json`
     console.log(file)
 
     try {

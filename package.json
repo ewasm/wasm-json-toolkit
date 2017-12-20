@@ -4,8 +4,8 @@
   "description": "this convertes wasm binaries to json and json to wasm binaries",
   "main": "index.js",
   "scripts": {
-    "coverage": "node --harmony ./node_modules/istanbul/lib/cli.js cover ./test/index.js",
-    "coveralls": "npm run coverage && coveralls <coverage/lcov.info",
+    "coveralls": "npm run coverage && nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc npm test",
     "lint": "standard",
     "test": "node --harmony ./test/index.js"
   },
@@ -26,7 +26,7 @@
   "devDependencies": {
     "coveralls": "^3.0.0",
     "fs-extra": "^5.0.0",
-    "istanbul": "^0.4.1",
+    "nyc": "^11.3.0",
     "standard": "^10.0.2",
     "tape": "^4.6.3"
   },
