@@ -18,7 +18,8 @@
   "dependencies": {
     "bn.js": "^4.11.8",
     "buffer-pipe": "0.0.2",
-    "leb128": "0.0.4"
+    "leb128": "0.0.4",
+    "safe-buffer": "^5.1.1"
   },
   "bin": {
     "wasm2json": "./bin/wasm2json",
@@ -26,7 +27,6 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
-    "fs-extra": "^5.0.0",
     "nyc": "^11.4.1",
     "standard": "^10.0.3",
     "tape": "^4.8.0"

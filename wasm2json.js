@@ -40,9 +40,9 @@ _exports.parseSectionHeader = (stream) => {
   const id = stream.read(1)[0]
   const size = leb.unsigned.readBn(stream).toNumber()
   return {
-    id: id,
+    id,
     name: SECTION_IDS[id],
-    size: size
+    size
   }
 }
 

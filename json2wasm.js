@@ -1,3 +1,4 @@
+const Buffer = require('safe-buffer').Buffer
 const leb = require('leb128')
 const Stream = require('buffer-pipe')
 const OP_IMMEDIATES = require('./immediates.json')
