@@ -2,9 +2,9 @@ const leb = require('leb128')
 const Stream = require('buffer-pipe')
 const OP_IMMEDIATES = require('./immediates.json')
 
-const _exports = module.exports = (buf) => {
+const _exports = module.exports = (buf, filter) => {
   const stream = new Stream(buf)
-  return _exports.parse(stream)
+  return _exports.parse(stream, filter)
 }
 // https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md#language-types
 // All types are distinguished by a negative varint7 values that is the first
@@ -605,13 +605,20 @@ _exports.parseOp = (stream) => {
   return json
 }
 
-_exports.parse = (stream) => {
-  const json = [_exports.parsePreramble(stream)]
-  let header = _exports.parseSectionHeader(stream)
+_exports.parse = (stream, filter) => {
+  const json = []
+  const preramble = _exports.parsePreramble(stream)
+  if (!filter || filter.has('preramble')) {
+    json.push(preramble)
+  }
 
   while (!stream.end) {
+    const header = _exports.parseSectionHeader(stream)
+    if (filter && !filter.has(header.name)) {
+      stream.read(header.size)
+      continue
+    }
     json.push(sectionParsers[header.name](stream, header))
-    header = _exports.parseSectionHeader(stream)
   }
   return json
 }

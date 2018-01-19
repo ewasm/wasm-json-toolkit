@@ -30,19 +30,16 @@ Install `-g` global for cli usage.
 # API
 # wasm2json
 
-[./index.js:6-6](https://github.com/ewasm/wasm-json-toolkit/blob/f349ee056b8e5f2691f83e345fe01d9ec0f8807a/./index.js#L6-L6 "Source code on GitHub")
-
 converts a wasm binary into a json representation
 
 **Parameters**
 
--   `Buffer`  
+-  `Buffer` - The Webassembly Binary
+-  `filter` - `Set` containing the name of sections to parse. If no filter is given all sections will be parsed
 
 Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
 # json2wasm
-
-[./index.js:13-13](https://github.com/ewasm/wasm-json-toolkit/blob/f349ee056b8e5f2691f83e345fe01d9ec0f8807a/./index.js#L13-L13 "Source code on GitHub")
 
 converts a json representation to a wasm binary
 
@@ -53,8 +50,6 @@ converts a json representation to a wasm binary
 Returns **[Buffer](https://nodejs.org/api/buffer.html)** 
 
 # text2json
-
-[./index.js:27-27](https://github.com/ewasm/wasm-json-toolkit/blob/f349ee056b8e5f2691f83e345fe01d9ec0f8807a/./index.js#L27-L27 "Source code on GitHub")
 
 converts text to json. The only text accepted is a simple list of opcode name and immediates
 
