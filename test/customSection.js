@@ -13,7 +13,7 @@ const expectedJson = [{
     109
   ],
   'version': [
-    13,
+    1,
     0,
     0,
     0
