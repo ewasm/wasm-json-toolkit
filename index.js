@@ -25,3 +25,24 @@ exports.json2wasm = require('./json2wasm')
  * const json = text2json(codeStr)
  */
 exports.text2json = require('./text2json')
+
+exports.findSections = function * (array, sectionOrder) {
+  let section = array[0]
+  let index = 0
+  const wantedSections = new Set(sectionOrder)
+  let nextSection = sectionOrder.shift()
+
+  while (section) {
+    if (!wantedSections.has(section.name)) {
+      section = array[++index]
+    } else {
+      if (section.name === nextSection) {
+        yield section
+        section = array[++index]
+      } else {
+        yield null
+      }
+      nextSection = sectionOrder.shift()
+    }
+  }
+}
