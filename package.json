@@ -7,7 +7,7 @@
     "coveralls": "npm run coverage && nyc report --reporter=text-lcov | coveralls",
     "coverage": "nyc npm test",
     "lint": "standard",
-    "test": "node --harmony ./test/index.js"
+    "test": "node ./test/index.js"
   },
   "keywords": [
     "wasm",
