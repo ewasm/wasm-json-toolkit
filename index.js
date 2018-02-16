@@ -1,13 +1,13 @@
 /**
  * Converts a wasm binary into a json representation
  * @param {Buffer}
- * @return {Object}
+ * @return {Array}
  */
 exports.wasm2json = require('./wasm2json')
 
 /**
  * Converts a json representation to a wasm binary
- * @param {Object}
+ * @param {Array}
  * @return {Buffer}
  */
 exports.json2wasm = require('./json2wasm')
@@ -26,14 +26,19 @@ exports.json2wasm = require('./json2wasm')
  */
 exports.text2json = require('./text2json')
 
-exports.findSections = function * (array, sectionOrder) {
+/**
+ * iterates thourgh an array of sections returning a subset of sections
+ * @param {Array}
+ * @param {Sections}
+ */
+exports.findSections = function * (array, sections) {
   let section = array[0]
   let index = 0
-  const wantedSections = new Set(sectionOrder)
-  let nextSection = sectionOrder.shift()
+  const wantedSections = new Set(sections)
+  let nextSection = sections.shift()
 
   while (section) {
-    if (!wantedSections.has(section.name)) {
+    if (!wantedSections.has(section.sectionName || section.name)) {
       section = array[++index]
     } else {
       if (section.name === nextSection) {
@@ -42,7 +47,7 @@ exports.findSections = function * (array, sectionOrder) {
       } else {
         yield null
       }
-      nextSection = sectionOrder.shift()
+      nextSection = sections.shift()
     }
   }
 }
