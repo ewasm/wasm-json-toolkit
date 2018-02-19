@@ -329,13 +329,13 @@ const sectionGenerators = {
       // a single type entry binary encoded
       binEntries.write([LANGUAGE_TYPES[entry.form]]) // the form
 
-      const len = entry.params.length  // number of parameters
+      const len = entry.params.length // number of parameters
       leb.unsigned.write(len, binEntries)
       if (len !== 0) {
         binEntries.write(entry.params.map(type => LANGUAGE_TYPES[type])) // the paramter types
       }
 
-      binEntries.write([entry.return_type ? 1 : 0])   // number of return types
+      binEntries.write([entry.return_type ? 1 : 0]) // number of return types
 
       if (entry.return_type) {
         binEntries.write([LANGUAGE_TYPES[entry.return_type]])
