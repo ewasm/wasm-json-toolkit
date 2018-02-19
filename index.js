@@ -41,11 +41,11 @@ exports.findSections = function * (array, sections) {
     if (!wantedSections.has(section.sectionName || section.name)) {
       section = array[++index]
     } else {
-      if (section.name === nextSection) {
+      if ((section.sectionName || section.name) === nextSection) {
         yield section
         section = array[++index]
       } else {
-        yield null
+        yield
       }
       nextSection = sections.shift()
     }
