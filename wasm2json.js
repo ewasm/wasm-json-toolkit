@@ -365,7 +365,7 @@ const sectionParsers = _exports.sectionParsers = {
     const section = new Stream(stream.read(header.size))
     const nameLen = leb.unsigned.readBn(section).toNumber()
     const name = section.read(nameLen)
-    json.sectionName = name.toString()
+    json.sectionName = Buffer.from(name).toString()
     json.payload = [...section.buffer]
     return json
   },
@@ -410,10 +410,10 @@ const sectionParsers = _exports.sectionParsers = {
     for (let i = 0; i < numberOfEntries; i++) {
       const entry = {}
       const moduleLen = leb.unsigned.readBn(stream).toNumber()
-      entry.moduleStr = stream.read(moduleLen).toString()
+      entry.moduleStr = Buffer.from(stream.read(moduleLen)).toString()
 
       const fieldLen = leb.unsigned.readBn(stream).toNumber()
-      entry.fieldStr = stream.read(fieldLen).toString()
+      entry.fieldStr = Buffer.from(stream.read(fieldLen)).toString()
       const kind = stream.read(1)[0] // read single byte
       entry.kind = EXTERNAL_KIND[kind]
       entry.type = _exports.typeParsers[entry.kind](stream)
@@ -488,7 +488,7 @@ const sectionParsers = _exports.sectionParsers = {
     for (let i = 0; i < numberOfEntries; i++) {
       const strLength = leb.unsigned.readBn(stream).toNumber()
       const entry = {}
-      entry.field_str = stream.read(strLength).toString()
+      entry.field_str = Buffer.from(stream.read(strLength)).toString()
       const kind = stream.read(1)[0]
       entry.kind = EXTERNAL_KIND[kind]
       entry.index = leb.unsigned.readBn(stream).toNumber()
