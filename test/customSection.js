@@ -32,5 +32,7 @@ tape('testing custom sections', t => {
   const generatedWasm = json2wasm(json)
   t.equals(generatedWasm.toString('hex'), wasm.toString('hex'), 'should generate correctly')
 
+  t.deepEquals(expectedJson, json, 'initial json should not be mutated')
+
   t.end()
 })

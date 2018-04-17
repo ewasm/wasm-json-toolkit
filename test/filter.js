@@ -8,7 +8,7 @@ const binary = fs.readFileSync(`${__dirname}/addTwo.wasm`)
 
 tape('filtering', t => {
   const json = wasm2json(binary, new Set(['export']))
-  t.equals(json.length, 1, 'shoudl have correct length')
+  t.equals(json.length, 1, 'should have correct length')
   t.end()
 })
 

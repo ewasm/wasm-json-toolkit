@@ -503,8 +503,9 @@ const sectionGenerators = {
 }
 
 _exports.generate = (json, stream = new Stream()) => {
-  _exports.generatePreramble(json.shift(), stream)
-  for (let item of json) {
+  const [ preamble, ...rest ] = json
+  _exports.generatePreramble(preamble, stream)
+  for (let item of rest) {
     sectionGenerators[item.name](item, stream)
   }
 
