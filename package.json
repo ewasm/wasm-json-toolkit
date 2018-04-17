@@ -28,8 +28,8 @@
   "devDependencies": {
     "coveralls": "^3.0.0",
     "nyc": "11.6.0",
-    "standard": "^11.0.0",
-    "tape": "^4.8.0"
+    "standard": "^11.0.1",
+    "tape": "^4.9.0"
   },
   "repository": {
     "type": "git",
