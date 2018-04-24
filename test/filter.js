@@ -17,8 +17,8 @@ tape('finding', t => {
   const iterator = jsonToolkit.findSections(json, ['type', 'element', 'export'])
   const results = [...iterator]
   t.equals(results.length, 3)
-  t.equals(results[1], undefined)
   t.equals(results[0].name, 'type')
+  t.equals(results[1], undefined)
   t.equals(results[2].name, 'export')
 
   t.end()
