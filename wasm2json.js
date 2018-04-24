@@ -606,18 +606,11 @@ _exports.parseOp = (stream) => {
 }
 
 _exports.parse = (stream, filter) => {
-  const json = []
   const preramble = _exports.parsePreramble(stream)
-  if (!filter || filter.has('preramble')) {
-    json.push(preramble)
-  }
+  const json = [preramble]
 
   while (!stream.end) {
     const header = _exports.parseSectionHeader(stream)
-    if (filter && !filter.has(header.name)) {
-      stream.read(header.size)
-      continue
-    }
     json.push(sectionParsers[header.name](stream, header))
   }
   return json
