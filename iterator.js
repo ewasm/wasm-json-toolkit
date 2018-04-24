@@ -62,8 +62,8 @@ module.exports = class ModuleIterator {
  * through the Module's iternator
  */
 class Section {
-  constructor (sectionType, section, wump, index) {
-    this._wump = wump
+  constructor (sectionType, section, it, index) {
+    this._it = it
     this._index = index
     this.type = SECTIONS[sectionType]
     this._type = sectionType
@@ -101,7 +101,7 @@ class Section {
     ])
 
     // encode length has save modifed section
-    this._wump._update(this._index, Buffer.concat([
+    this._it._update(this._index, Buffer.concat([
       Buffer.from([this._type]),
       leb128.encode(bodyAndCount.length),
       bodyAndCount
