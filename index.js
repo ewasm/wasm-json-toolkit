@@ -25,29 +25,4 @@ exports.json2wasm = require('./json2wasm')
  * const json = text2json(codeStr)
  */
 exports.text2json = require('./text2json')
-
-/**
- * iterates thourgh an array of sections returning a subset of sections
- * @param {Array}
- * @param {Sections}
- */
-exports.findSections = function * (array, sections) {
-  let section = array[0]
-  let index = 0
-  const wantedSections = new Set(sections)
-  let nextSection = sections.shift()
-
-  while (section) {
-    if (!wantedSections.has(section.sectionName || section.name)) {
-      section = array[++index]
-    } else {
-      if ((section.sectionName || section.name) === nextSection) {
-        yield section
-        section = array[++index]
-      } else {
-        yield
-      }
-      nextSection = sections.shift()
-    }
-  }
-}
+exports.Iterator = require('./iterator')

@@ -70,6 +70,65 @@ const json = text2json(codeStr)
 
 Returns **[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
+# iterator
+
+[iterator.js:12-58](https://github.com/ewasm/wasm-json-toolkit/blob/e9fdd9498451b39b84c1167e78dc4aad03b055bd/iterator.js#L12-L58 "Source code on GitHub")
+
+The Module Iterator allows for iteration over a webassembly module's sections.
+A section is wrapped in a section class. A section class instance allows you
+append entries to a given section
+
+**Examples**
+
+```javascript
+const it = new Iterator(wasm)
+for (const section of it) {
+  console.log(section.type)
+  const json = section.toJSON()
+}
+```
+
+## wasm
+
+[iterator.js:26-32](https://github.com/ewasm/wasm-json-toolkit/blob/e9fdd9498451b39b84c1167e78dc4aad03b055bd/iterator.js#L26-L32 "Source code on GitHub")
+
+if the orignal wasm module was modified then this will return the modified
+wasm module
+
+## iterator
+
+[iterator.js:38-52](https://github.com/ewasm/wasm-json-toolkit/blob/e9fdd9498451b39b84c1167e78dc4aad03b055bd/iterator.js#L38-L52 "Source code on GitHub")
+
+Iterates through the module's sections
+return {Iterator.<Section>}
+
+# Section
+
+[iterator.js:64-110](https://github.com/ewasm/wasm-json-toolkit/blob/e9fdd9498451b39b84c1167e78dc4aad03b055bd/iterator.js#L64-L110 "Source code on GitHub")
+
+The section class is always internal created by the Module class. And return
+through the Module's iternator
+
+
+## toJSON
+
+[iterator.js:83-85](https://github.com/ewasm/wasm-json-toolkit/blob/e9fdd9498451b39b84c1167e78dc4aad03b055bd/iterator.js#L83-L85 "Source code on GitHub")
+
+Parses the section and return the JSON repesentation of it
+returns {Object}
+
+## appendEntries
+
+[iterator.js:92-109](https://github.com/ewasm/wasm-json-toolkit/blob/e9fdd9498451b39b84c1167e78dc4aad03b055bd/iterator.js#L92-L109 "Source code on GitHub")
+
+Appends an array of entries to this section. NOTE: this will modify the
+parent wasm module.
+
+**Parameters**
+
+-   `entries` **Arrayy&lt;[Buffer](https://nodejs.org/api/buffer.html)>** 
+
+
 ## exammple json output
 
 wast
