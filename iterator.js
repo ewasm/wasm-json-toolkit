@@ -1,3 +1,4 @@
+const Buffer = require('safe-buffer').Buffer
 const leb128 = require('leb128').unsigned
 const wasm2json = require('./wasm2json.js')
 const Pipe = require('buffer-pipe')
