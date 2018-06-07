@@ -45,7 +45,7 @@ module.exports = class ModuleIterator {
       const size = Number(leb128.read(this._pipe))
       const body = this._pipe.read(size)
       const end = this._pipe.bytesRead
-      const section = this._wasm.subarray(start, end)
+      const section = this._wasm.slice(start, end)
       const index = this._sections.push(section) - 1
 
       yield new Section(sectionType, body, this, index)
