@@ -21,7 +21,7 @@ module.exports = class ModuleIterator {
   }
 
   /**
-   * if the orignal wasm module was modified then this will return the modified
+   * if the original wasm module was modified then this will return the modified
    * wasm module
    */
   get wasm () {
@@ -60,7 +60,7 @@ module.exports = class ModuleIterator {
 
 /**
  * The section class is always internal created by the Module class. And return
- * through the Module's iternator
+ * through the Module's iterator
  */
 class Section {
   constructor (sectionType, section, it, index) {
@@ -78,7 +78,7 @@ class Section {
   }
 
   /**
-   * Parses the section and return the JSON repesentation of it
+   * Parses the section and return the JSON representation of it
    * returns {Object}
    */
   toJSON () {
@@ -88,7 +88,7 @@ class Section {
   /**
    * Appends an array of entries to this section. NOTE: this will modify the
    * parent wasm module.
-   * @param {Arrayy.<Buffer>} entries
+   * @param {Array.<Buffer>} entries
    */
   appendEntries (entries) {
     this.count += entries.length

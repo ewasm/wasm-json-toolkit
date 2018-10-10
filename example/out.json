@@ -1,7 +1,7 @@
 0061736d0d00000001070160027f7f017f03020100070a010661646454776f00000a09010700200020016a0b
 [
   {
-    "name": "preramble",
+    "name": "preamble",
     "magic": [
       0,
       97,
@@ -52,11 +52,11 @@
         "code": [
           {
             "name": "get_local",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "name": "get_local",
-            "immediaties": "1"
+            "immediates": "1"
           },
           {
             "return_type": "i32",

@@ -15,7 +15,7 @@ const LANGUAGE_TYPES = _exports.LANGUAGE_TYPES = {
   'i64': 0x7e,
   'f32': 0x7d,
   'f64': 0x7c,
-  'anyFunc': 0x70,
+  'anyfunc': 0x70,
   'func': 0x60,
   'block_type': 0x40
 }
@@ -241,7 +241,7 @@ _exports.typeGenerators = {
    */
   memory: (json, stream) => {
     leb.unsigned.write(Number(json.maximum !== undefined), stream) // the flags
-    leb.unsigned.write(json.intial, stream)
+    leb.unsigned.write(json.initial, stream)
 
     if (json.maximum !== undefined) {
       leb.unsigned.write(json.maximum, stream)
@@ -420,7 +420,7 @@ _exports.generateSection = function (json, stream = new Stream()) {
 
 _exports.generate = (json, stream = new Stream()) => {
   const [ preamble, ...rest ] = json
-  _exports.generatePreramble(preamble, stream)
+  _exports.generatePreamble(preamble, stream)
   for (let item of rest) {
     _exports.generateSection(item, stream)
   }
@@ -428,7 +428,7 @@ _exports.generate = (json, stream = new Stream()) => {
   return stream
 }
 
-_exports.generatePreramble = (json, stream = new Stream()) => {
+_exports.generatePreamble = (json, stream = new Stream()) => {
   stream.write(json.magic)
   stream.write(json.version)
   return stream
