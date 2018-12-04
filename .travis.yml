@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "9"
+  - "10"
 env:
   matrix:
     - TEST_SUITE=test
@@ -8,9 +8,9 @@ matrix:
   fast_finish: true
   include:
     - os: linux
-      node_js: "9"
+      node_js: "10"
       env: TEST_SUITE=coveralls
     - os: linux
-      node_js: "9"
+      node_js: "10"
       env: TEST_SUITE=lint
 script: npm run $TEST_SUITE
