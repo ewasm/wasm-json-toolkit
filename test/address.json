@@ -1,6 +1,6 @@
 [
   {
-    "name": "preramble",
+    "name": "preamble",
     "magic": [
       0,
       97,
@@ -37,7 +37,7 @@
     "entries": [
       {
         "flags": 0,
-        "intial": 1
+        "initial": 1
       }
     ]
   },
@@ -64,211 +64,211 @@
         "code": [
           {
             "name": "get_local",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "return_type": "i32",
             "name": "load8_u",
-            "immediaties": {
+            "immediates": {
               "flags": 0,
               "offset": 0
             }
           },
           {
             "name": "call",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "name": "get_local",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "return_type": "i32",
             "name": "load8_u",
-            "immediaties": {
+            "immediates": {
               "flags": 0,
               "offset": 1
             }
           },
           {
             "name": "call",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "name": "get_local",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "return_type": "i32",
             "name": "load8_u",
-            "immediaties": {
+            "immediates": {
               "flags": 0,
               "offset": 2
             }
           },
           {
             "name": "call",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "name": "get_local",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "return_type": "i32",
             "name": "load8_u",
-            "immediaties": {
+            "immediates": {
               "flags": 0,
               "offset": 25
             }
           },
           {
             "name": "call",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "name": "get_local",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "return_type": "i32",
             "name": "load16_u",
-            "immediaties": {
+            "immediates": {
               "flags": 1,
               "offset": 0
             }
           },
           {
             "name": "call",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "name": "get_local",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "return_type": "i32",
             "name": "load16_u",
-            "immediaties": {
+            "immediates": {
               "flags": 0,
               "offset": 0
             }
           },
           {
             "name": "call",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "name": "get_local",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "return_type": "i32",
             "name": "load16_u",
-            "immediaties": {
+            "immediates": {
               "flags": 0,
               "offset": 1
             }
           },
           {
             "name": "call",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "name": "get_local",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "return_type": "i32",
             "name": "load16_u",
-            "immediaties": {
+            "immediates": {
               "flags": 1,
               "offset": 2
             }
           },
           {
             "name": "call",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "name": "get_local",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "return_type": "i32",
             "name": "load16_u",
-            "immediaties": {
+            "immediates": {
               "flags": 0,
               "offset": 25
             }
           },
           {
             "name": "call",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "name": "get_local",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "return_type": "i32",
             "name": "load",
-            "immediaties": {
+            "immediates": {
               "flags": 2,
               "offset": 0
             }
           },
           {
             "name": "call",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "name": "get_local",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "return_type": "i32",
             "name": "load",
-            "immediaties": {
+            "immediates": {
               "flags": 0,
               "offset": 1
             }
           },
           {
             "name": "call",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "name": "get_local",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "return_type": "i32",
             "name": "load",
-            "immediaties": {
+            "immediates": {
               "flags": 1,
               "offset": 2
             }
           },
           {
             "name": "call",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "name": "get_local",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "return_type": "i32",
             "name": "load",
-            "immediaties": {
+            "immediates": {
               "flags": 0,
               "offset": 25
             }
           },
           {
             "name": "call",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "name": "end"
@@ -280,12 +280,12 @@
         "code": [
           {
             "name": "get_local",
-            "immediaties": "0"
+            "immediates": "0"
           },
           {
             "return_type": "i32",
             "name": "load",
-            "immediaties": {
+            "immediates": {
               "flags": 2,
               "offset": 4294967295
             }

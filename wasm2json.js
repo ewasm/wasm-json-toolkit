@@ -14,7 +14,7 @@ const LANGUAGE_TYPES = _exports.LANGUAGE_TYPES = {
   0x7e: 'i64',
   0x7d: 'f32',
   0x7c: 'f64',
-  0x70: 'anyFunc',
+  0x70: 'anyfunc',
   0x60: 'func',
   0x40: 'block_type'
 }
@@ -28,9 +28,9 @@ const EXTERNAL_KIND = _exports.EXTERNAL_KIND = {
   3: 'global'
 }
 
-_exports.parsePreramble = (stream) => {
+_exports.parsePreamble = (stream) => {
   const obj = {}
-  obj.name = 'preramble'
+  obj.name = 'preamble'
   obj.magic = [...stream.read(4)]
   obj.version = [...stream.read(4)]
   return obj
@@ -339,7 +339,7 @@ _exports.typeParsers = {
   memory: (stream) => {
     const limits = {}
     limits.flags = leb.unsigned.readBn(stream).toNumber()
-    limits.intial = leb.unsigned.readBn(stream).toNumber()
+    limits.initial = leb.unsigned.readBn(stream).toNumber()
     if (limits.flags === 1) {
       limits.maximum = leb.unsigned.readBn(stream).toNumber()
     }
@@ -606,8 +606,8 @@ _exports.parseOp = (stream) => {
 }
 
 _exports.parse = (stream, filter) => {
-  const preramble = _exports.parsePreramble(stream)
-  const json = [preramble]
+  const preamble = _exports.parsePreamble(stream)
+  const json = [preamble]
 
   while (!stream.end) {
     const header = _exports.parseSectionHeader(stream)
