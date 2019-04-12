@@ -221,7 +221,7 @@ const OPCODES = _exports.OPCODES = {
 
 _exports.typeGenerators = {
   'function': (json, stream) => {
-    stream.write([json])
+    leb.unsigned.write(json, stream)
   },
   table: (json, stream) => {
     stream.write([LANGUAGE_TYPES[json.elementType]])
