@@ -41,7 +41,8 @@ const SECTION_IDS = _exports.SECTION_IDS = {
   'start': 8,
   'element': 9,
   'code': 10,
-  'data': 11
+  'data': 11,
+  'data_count': 12
 }
 
 const OPCODES = _exports.OPCODES = {
@@ -405,6 +406,8 @@ _exports.generateSection = function (json, stream = new Stream()) {
     payload.write(json.payload)
   } else if (name === 'start') {
     leb.unsigned.write(json.index, payload)
+  } else if (name === 'data_count') {
+    leb.unsigned.write(json.count, payload)
   } else {
     leb.unsigned.write(json.entries.length, payload)
     for (let entry of json.entries) {
