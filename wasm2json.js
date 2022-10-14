@@ -252,7 +252,8 @@ const SECTION_IDS = _exports.SECTION_IDS = {
   8: 'start',
   9: 'element',
   10: 'code',
-  11: 'data'
+  11: 'data',
+  12: 'data_count'
 }
 
 _exports.immediataryParsers = {
@@ -579,6 +580,14 @@ const sectionParsers = _exports.sectionParsers = {
       entry.data = [...stream.read(segmentSize)]
 
       json.entries.push(entry)
+    }
+    return json
+  },
+  'data_count': (stream) => {
+    const numberOfEntries = leb.unsigned.readBn(stream).toNumber()
+    const json = {
+      name: 'data_count',
+      count: numberOfEntries
     }
     return json
   }
